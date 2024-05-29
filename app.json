@@ -1,0 +1,55 @@
+{
+    "entryPagePath": "pages/index/index",
+    "pages": [
+        "pages/index/index",
+        "pages/category/category",
+        "pages/cart/cart",
+        "pages/profile/profile",
+        "pages/index/components/info/info",
+        "pages/index/components/swiper/swiper",
+        "pages/index/components/goodNav/goodNav",
+        "pages/list/list",
+        "pages/test/test",
+        "pages/index/components/scroll/scroll"
+    ],
+    "window": {
+        "navigationBarTitleText": "花城",
+        "navigationBarTextStyle": "white",
+        "navigationBarBackgroundColor": "#f3514f",
+        "enablePullDownRefresh": true,
+        "backgroundColor": "#efefef"
+    },
+    "tabBar": {
+        "color": "#000000",
+        "selectedColor": "#f3514f",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "主页",
+                "iconPath": "/assets/主页.png",
+                "selectedIconPath": "/assets/主页 (1).png"
+            },
+            {
+                "pagePath": "pages/category/category",
+                "text": "分类",
+                "iconPath": "/assets/分类.png",
+                "selectedIconPath": "/assets/分类 (1).png"
+            },
+            {
+                "pagePath": "pages/cart/cart",
+                "text": "购物车",
+                "iconPath": "/assets/购物车.png",
+                "selectedIconPath": "/assets/购物车 (1).png"
+            },
+            {
+                "pagePath": "pages/profile/profile",
+                "text": "我的",
+                "iconPath": "/assets/我的.png",
+                "selectedIconPath": "/assets/我的 (1).png"
+            }
+        ]
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json",
+    "lazyCodeLoading": "requiredComponents"
+}

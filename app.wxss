@@ -1,0 +1,6 @@
+/**app.wxss**/
+input{
+  border: 1px solid black;
+  background-color: #ccc;
+  color: red;
+}

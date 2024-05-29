@@ -1,0 +1,12 @@
+<!--pages/index/components/scroll/scroll.wxml-->
+<view class="scroll-box">
+  <scroll-view enable-flex scroll-x>
+    <view wx:for="{{flowerArr}}" wx:key="*this" class="shop-box">
+      <image src="/assets/{{item.img}}.jpg" mode="" />
+      <view>
+        <text class="name">{{item.name}}</text>
+        <text>{{item.price}}</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

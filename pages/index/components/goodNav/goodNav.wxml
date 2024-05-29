@@ -1,0 +1,17 @@
+<!--pages/index/components/goodNav/goodNav.wxml-->
+<view class="goodNav-box">
+    <view wx:for="{{5}}">
+        <image src="/assets/鲜花租赁.png" mode="" />
+        <!-- <text>{{'鲜花商城'}}</text> -->
+        <!-- navigator open-type属性非switchTab不能跳转到tabBar页面 -->
+        <!-- navigate默认返回上一页模式  redirect返回主页模式 switchTab可以转跳tabBar模式 reLaunch关闭小程序所有页面然后打开当前页面 navigateBack返回上一页或者前几页- -->
+        <!-- navigateBack中delta表示返回的层级 几表示几级 -->
+        <!-- switchTab中路由传参失效 -->
+        <!-- 跳转前要加/否则不转跳 -->
+        <navigator url="/pages/list/list?idCard=331004&num=312" open-type="navigate">鲜花商城</navigator>
+        <!-- <navigator url="/pages/test/test" open-type="redirect">测试转跳redirect</navigator>
+        <navigator url="/pages/cart/cart" open-type="switchTab">测试转跳switchTab</navigator>
+        <navigator url="/pages/test/test" open-type="reLaunch">测试转跳reLaunch</navigator>
+        <navigator open-type="navigateBack" delta="3">测试转跳navigateBack</navigator> -->
+    </view>
+</view>

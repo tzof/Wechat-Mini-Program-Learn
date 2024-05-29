@@ -1,0 +1,8 @@
+<!--pages/index/components/swiper/swiper.wxml-->
+<view class="swiper-box">
+    <swiper autoplay circular indicator-dots="true" interval="1000">
+        <swiper-item wx:for="{{imgList}}" wx:key="*this">
+            <image src="/assets/{{item}}" mode="" show-menu-by-longpress="" />
+        </swiper-item>
+    </swiper>
+</view>

@@ -1,0 +1,28 @@
+<!--pages/index/index.wxml-->
+<view class="index">
+  <swiperBox />
+  <info />
+  <goodNav />
+  <scrollBox />
+  <view>
+    <text>{{obj1.name}} </text>
+    <text>{{obj1.value}} </text>
+    <text>{{obj1.com}}\n</text>
+    <!-- wx:key中不用写{{}}可以直接写item中的某一个属性 或者直接使用*this表示本身 -->
+    <!-- block不是一个组件 只是渲染元素 只是包装元素，可以组织包装结构 支持for和if 不会在页面中进行任何渲染 -->
+    <block wx:for="{{arr1}}" wx:key="*this">
+      <text wx:if="{{item == 1}}">{{item}}我是1 </text>
+      <text wx:elif="{{item == 2}}">{{item}}我是2 </text><text wx:else="">{{item}}other{{index}}</text>
+    </block>
+  </view>
+  <button type="primary" bindtap="onTapTest">{{text}}</button>
+  <!-- data-*传递参数时会被转换为全部小写 -->
+  <!-- mark:*包括次节点到根节点所有的mark数据 -->
+  <button bind:tap="onTapTest" data-data="0000" data-tttt="ceshi" mark:testMark="123">测试</button>
+  <!-- 在小程序中input默认没有边框需要自己添加样式 -->
+  <!-- catch组织事件冒泡 bind不阻止 -->
+  <!-- model:属性="{{value}}" 双向绑定属性 不支持数据类型也就是数组和对象 -->
+  <input type="text" model:value="{{value}}" catchinput="onInputTest" />
+  <checkbox checked="{{false}}" />
+  <checkbox checked="false" />
+</view>
