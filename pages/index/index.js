@@ -124,6 +124,11 @@ Page({
       // 不管成功失败都会执行
       complete: (res) => {
         console.log(res, '不管点击确定或取消都会执行');
+        wx.showToast({
+          title: '把标题',
+          icon: 'none',
+          duration: 3000,
+        })
       },
     });
     // 或者使用 对象返回的方法使用(注意添加await)
@@ -133,6 +138,63 @@ Page({
     })
     // 参数有 cancel: 取消状态 confirm: 确定状态
     console.log(res);
+  },
+  setStorage() {
+    wx.setStorageSync('tzof', 3212)
+    // 微信本地存储对象不需要使用JSON.stringify和JSON.parse转换
+    wx.setStorageSync('obj', {
+      test: 123,
+      tzof: 'ppp'
+    })
+    // 异步 {key:value}对象形式，里面必须有key,data表示值
+    wx.setStorage({
+      key: 'obj2',
+      data: [1, 2, 2, 3, 34]
+    })
+  },
+  async getStorage() {
+    console.log(wx.getStorageSync('tzof'), wx.getStorageSync('obj'));
+    // 异步 记得添加await
+    console.log(await wx.getStorage({
+      key: 'obj2'
+    }));
+  },
+  removeStorage() {
+    wx.removeStorageSync('tzof')
+  },
+  clearStorage() {
+    wx.clearStorageSync();
+  },
+  // 使用url传参，子组件中在onLoad生命周期内options参数接收，switchTab不能传参
+  navigateTo() {
+    // 保留当前页面后转跳，所以有返回上一级，不能跳tabBar
+    wx.navigateTo({
+      url: '/pages/list/list?id=331004&name=yl',
+    })
+  },
+  redirectTo() {
+    // 销毁当前页面后转跳，所以没有返回上一级，不能跳tabBar
+    wx.redirectTo({
+      url: '/pages/list/list',
+    })
+  },
+  switchTab() {
+    // 销毁当前页面后转跳tabBar页面，不能转跳非tabBar页面
+    wx.switchTab({
+      url: '/pages/cart/cart',
+    })
+  },
+  reLauch() {
+    // 销毁所有页面后转跳，所以没有返回上一级。可以跳tabBar
+    wx.reLaunch({
+      url: '/pages/cart/cart',
+    })
+  },
+  // 返回上一页或多级页面，默认一级
+  navigateBack() {
+    wx.navigateBack()
+    // delta: 1,返回层级
+    // wx.navigateBack({delta:1})
   },
   /**
    * 生命周期函数--监听页面加载页面创建的时候执行 只会调用一次

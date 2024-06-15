@@ -1,2 +1,27 @@
 <!--pages/profile/profile.wxml-->
-<text>pages/profile/profile.wxml</text>
+<!-- https://developers.weixin.qq.com/miniprogram/dev/component/scroll-view.html#Skyline%20%E7%89%B9%E6%9C%89%E5%B1%9E%E6%80%A7 -->
+<!-- 下拉加载： -->
+<!-- lower-threshold 距底部多远，触发 scrolltolower 事件	 -->
+<!-- bindscrolltolower 滚动到底触发事件，上拉加载更多 -->
+<!-- enable-back-to-top	点击状态栏或者标题栏返回顶部 ios/安卓 -->
+<!-- 上拉刷新： -->
+<!-- refresher-enabled	开启自定义下拉 -->
+<!-- refresher-default-style 设置自定义下拉刷新默认样式 black | white | none， none 表示不使用默认样式 -->
+<!-- refresher-background	设置自定义下拉刷新区域背景颜色，默认为透明 -->
+<!-- bindrefresherrefresh 自定义下拉刷新触发事件，下拉刷新 -->
+<!-- refresher-triggered	下拉刷新状态(是否回弹loading状态) false表示关闭下拉loading状态-->
+<scroll-view 
+  scroll-y 
+  class="scroll-y"
+  lower-threshold="100"
+  bindscrolltolower="onScrollToLower"
+  enable-back-to-top
+
+  refresher-enabled	
+  refresher-default-style="black"
+  refresher-background="pink"
+  bindrefresherrefresh="onScrollRefresh"
+  refresher-triggered="{{isTriggered}}"
+  >
+  <view wx:for="{{numList}}" wx:key="*this">{{item}}</view>
+</scroll-view>

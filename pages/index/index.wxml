@@ -27,4 +27,16 @@
   <checkbox checked="false" />
   <button catch:tap="onClickGetData" type="primary">获取数据</button>
   <button bindtap="onClickExit">exit</button>
+  <!-- 本地存储 -->
+  <!-- 同步后面加Sync，异步记得加await -->
+  <button bindtap="setStorage" type="primary">新增/修改</button>
+  <button bindtap="getStorage" type="warn">获取</button>
+  <button bindtap="removeStorage" type="default">删除</button>
+  <button bindtap="clearStorage">清空</button>
+  <!-- 路由与通信 -->
+  <button plain bindtap="navigateTo">navigateTo</button>
+  <button plain bindtap="redirectTo">redirectTo</button>
+  <button plain bindtap="switchTab">switchTab</button>
+  <button plain bindtap="reLauch">reLauch</button>
+  <button plain bindtap="navigateBack">navigateBack</button>
 </view>

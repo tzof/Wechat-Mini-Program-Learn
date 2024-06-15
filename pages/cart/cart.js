@@ -1,6 +1,8 @@
 // pages/cart/cart.js
 Page({
-
+  navigateBack() {
+    wx.navigateBack()
+  },
     /**
      * 页面的初始数据
      */
