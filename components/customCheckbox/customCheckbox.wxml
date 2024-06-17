@@ -1,0 +1,9 @@
+<!--components/customCheckbox/customCheckbox.wxml-->
+<view>
+  <slot name="bottom" />
+  <checkbox id="checkBoxCustom" model:checked="{{isChecked}}" bindtap="onClickCheck" />
+  <text>{{label}}</text>
+  <label for="checkBoxCustom"></label>
+  <slot name="top" />
+
+</view>

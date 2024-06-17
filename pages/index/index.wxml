@@ -39,4 +39,9 @@
   <button plain bindtap="switchTab">switchTab</button>
   <button plain bindtap="reLauch">reLauch</button>
   <button plain bindtap="navigateBack">navigateBack</button>
+  <!-- 组件 传值 -->
+  <customCheckbox label="我已阅读并同意用户协议和隐私协议" position="right">
+    <text slot="top">我是上面</text>
+    <text slot="bottom">我是下面</text>
+  </customCheckbox>
 </view>

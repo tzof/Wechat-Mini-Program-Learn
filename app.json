@@ -57,5 +57,8 @@
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "customCheckbox": "/components/customCheckbox/customCheckbox"
+  }
 }
