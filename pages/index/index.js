@@ -13,6 +13,7 @@ Page({
     },
     arr1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
     value: '',
+    label: '我已阅读并同意用户协议和隐私协议',
   },
   onTapTest(event) {
     // currentTarget事件绑定的dom
@@ -57,6 +58,7 @@ Page({
     }, 4000);
   },
   onInputTest(event) {
+    // event事件对象获取传递的数据 event.detail组件的数据
     console.log(event.detail.value);
   },
   onClickGetData() {
@@ -195,6 +197,23 @@ Page({
     wx.navigateBack()
     // delta: 1,返回层级
     // wx.navigateBack({delta:1})
+  },
+  // 点击自定义组件
+  onClickCusCheckbox() {
+    this.setData({
+      label: '改变label'
+    })
+  },
+  // 子传父 父组件内要添加bind自定义事件名接收 event事件对象获取传递的数据 event.detail传递的数据
+  CToFGetData(event) {
+    console.log(event, event.detail);
+  },
+  // 获取子组件实例 可以获取子组件所有的变量和方法 类似ref
+  getCDOm() {
+    // selectComponent选择器 可以是.class #id获取子组件的实例
+    const res = this.selectComponent('#customCheckbox')
+    // 获取子组件 实例 数据(包括data和properties) 方法
+    console.log(res, res.data, res.onClickCtoF);
   },
   /**
    * 生命周期函数--监听页面加载页面创建的时候执行 只会调用一次

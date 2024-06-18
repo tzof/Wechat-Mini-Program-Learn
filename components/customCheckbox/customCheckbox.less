@@ -1,1 +1,39 @@
 /* components/customCheckbox/customCheckbox.wxss */
+// 1.在组件和引用组件的页面不能使用 id选择器，属性选择器，标签名选择器 来设置样式
+// 可以使用类选择器
+// #checkBoxCustom{}
+// [id=checkBoxCustom]{}
+// checkbox{
+//   background-color: #fff;
+// }
+// 2.组件和引用组件之间的后代选择器 可能非预期的情况
+// .父亲 .儿子
+// 3.子选择器只能用于 view组件 和 子组件 其他组件使用时可能会失效等问题
+// page > checkbox{
+//   background-color: red;
+// }
+// 4.继承样式 如font、color 会从组件外继承到组件内
+// 5.除继承样式外全局样式、组件所在页面的样式都对自定义组件无效
+
+// https://developers.weixin.qq.com/miniprogram/dev/component/checkbox.html
+// 要更改微信自带组件的样式如checkbox需要去游览器访问文档中对应的组件选择dom来查看相应的class类 并且必须添加!important权重
+// 如果要进行修改微信默认组件的样式 需要在组件的.js中设置styleIsolation为shared才生效
+// 要只影响当前组件可以添加class类名使用后代选择器，如：.checkBoxCustom .wx-checkbox-input
+// 复选框的默认样式
+.checkBoxCustom .wx-checkbox-input {
+  width: 24rpx !important;
+  height: 24rpx !important;
+  border-radius: 50% !important;
+  border: 1px solid #fda007 !important;
+}
+
+// 复选框选中时的样式，继承默认样式
+.checkBoxCustom .wx-checkbox-input-checked {
+  border-color: red !important;
+}
+
+// 复选框选中时候里面的√
+.checkBoxCustom .wx-checkbox-input-checked::before {
+  font-size: 22rpx;
+  color: yellow;
+}

@@ -40,8 +40,11 @@
   <button plain bindtap="reLauch">reLauch</button>
   <button plain bindtap="navigateBack">navigateBack</button>
   <!-- 组件 传值 -->
-  <customCheckbox label="我已阅读并同意用户协议和隐私协议" position="right">
+  <!-- 父传子属性传参子组件内properties接收 -->
+  <!-- 子传父 父组件内需要添加bind自定义事件命接收 -->
+  <customCheckbox label="{{label}}" position="right" bindtap="onClickCusCheckbox" bindmyEvent="CToFGetData" id="customCheckbox">
     <text slot="top">我是上面</text>
     <text slot="bottom">我是下面</text>
   </customCheckbox>
+  <button bindtap="getCDOm" type="warn">获取子组件实例</button>
 </view>

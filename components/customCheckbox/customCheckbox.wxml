@@ -1,9 +1,9 @@
 <!--components/customCheckbox/customCheckbox.wxml-->
 <view>
-  <slot name="bottom" />
-  <checkbox id="checkBoxCustom" model:checked="{{isChecked}}" bindtap="onClickCheck" />
-  <text>{{label}}</text>
-  <label for="checkBoxCustom"></label>
   <slot name="top" />
-
+  <text>{{label}}</text>
+  <label for="checkBoxCustom">我是label</label>
+  <checkbox class="checkBoxCustom" id="checkBoxCustom" model:checked="{{isChecked}}" bindtap="onClickCheck" />
+  <slot name="bottom" />
+  <button type="primary" plain bindtap="onClickCtoF">子传父</button>
 </view>
