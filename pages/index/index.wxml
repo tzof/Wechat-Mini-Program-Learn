@@ -47,4 +47,17 @@
     <text slot="bottom">我是下面</text>
   </customCheckbox>
   <button bindtap="getCDOm" type="warn">获取子组件实例</button>
+  <!-- 传入的样式类 -->
+  <!-- 属性是在externalClasses里定义的值 -->
+  <!-- 属性值要求必须是类名 -->
+  <custom2 extend-class="my-class" text2="text2" />
+  <!-- custom-class是van-image组件的外部样式类 未生效添加权重!important
+ -->
+  <van-image width="100" height="100" round custom-class="custom-class" src="https://img.yzcdn.cn/vant/cat.jpeg" bindclick="onCLickImg" use-loading-slot use-error-slot>
+    <text slot="loading">加载中？！！</text>
+    <text slot="error">出错了！！！！</text>
+  </van-image>
+  <!-- // 1、低版本需要修改van组件的样式 需要修改样式隔离styleIsolation为shared
+// 2、使用文档中组件对应的外部样式类 -->
+  <van-button type="default">默认按钮</van-button>
 </view>

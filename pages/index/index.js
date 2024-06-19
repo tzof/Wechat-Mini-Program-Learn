@@ -1,6 +1,8 @@
 // pages/index/index.js
 Page({
-
+  // options: {
+  //   // 低版本需要修改van组件的样式 需要修改样式隔离styleIsolation为shared
+  // },
   /**
    * 页面的初始数据
    */
@@ -215,6 +217,10 @@ Page({
     // 获取子组件 实例 数据(包括data和properties) 方法
     console.log(res, res.data, res.onClickCtoF);
   },
+  // 点击图片
+  onCLickImg() {
+    console.log('点击了图片');
+  },
   /**
    * 生命周期函数--监听页面加载页面创建的时候执行 只会调用一次
    */
@@ -223,7 +229,8 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成 只会调用一次
+   * 生命周期函数--监听页面初次渲染完成 只会调用一次 
+   * onShow执行完再直系onReady
    */
   onReady() {
     console.log('onReady', '页面初次渲染完成的时候执行');

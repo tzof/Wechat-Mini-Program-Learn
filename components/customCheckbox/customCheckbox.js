@@ -1,11 +1,46 @@
 // components/customCheckbox/customCheckbox.js
+import behaviors from '../mixins/behavior' // 导入behaviors
+// components构造页面功能要比page方法强大很多 如observers监听等
+// 可以实现更加复杂逻辑的页面开发
 Component({
+  // 使用Component组件或者构造页面在.json中必须有usingComponents:{}
+  // behaviors注册behaviors。
+  // 如果存在相同的 数据 和 方法 会采用就近原则采用组件内部的数据，对象类型数据会进行合并
+  // 如果存在相同的生命周期，生命周期都会被触发
+  behaviors: [behaviors],
+  // 组件生命周期声明对象
+  lifetimes: {
+    // 组件实例被创建好以后执行 created中不能使用setdata
+    created() {
+      console.log('created');
+    },
+    // 组件初始化完成，模版解析完成 已经把组件挂在到页面上并完成渲染 类似mounted
+    attached() {
+      console.log('attached');
+    },
+    // 组件被销毁时执行
+    detached() {
+      console.log('detached');
+    }
+  },
+  // 组件所在页面的生命周期
+  pageLifetimes: {
+    // 监听组件所在页面展示状态 后台切前台
+    show() {
+      console.log('监听组件所在页面展示状态 冷启动 后台切前台');
+      console.log(this.data, 'tzof 组建的show');
+    },
+    // 监听组件所在页面隐藏状态 前台切后台 点击tabbar
+    hide() {
+      console.log('监听组件所在页面隐藏状态 销毁 前台切后台 点击tabbar');
+    }
+  },
   options: {
     // multipleSlots 启用多个slot插槽支持
     multipleSlots: true,
     // styleIsolatio，默认情况下开启样式隔离isolated  
     // apply-shared表示父组件的样式能影响到自定义组件，但是自定义组件的样式不会影响父组件的样式
-    // shared表示父组件的样式能影响到自定义组件，自定义组件的样式也能影响到其他设置了apply-shared或shared的自定义组件
+    // shared表示父组件的样式能影响到自定义组件，自定义组件的样式也能影响到其他设置了apply-shared或shared的自定义组件。属性值为shared时externalClasses失效
     styleIsolation: "shared"
   },
   /**
@@ -65,7 +100,8 @@ Component({
     }
   },
   /**
-   * 组件的方法列表
+   * 组件的方法列表 Component里所有的方法都要写到methods中
+   * 页面中page方法的一些钩子函数、生命周期、事件监听等钩子函数的方法必须放在methods中 如onLoad onReady等on开头的钩子函数
    */
   methods: {
     onClickCheck() {
@@ -80,8 +116,9 @@ Component({
       })
       this.data.num = 1;
       console.log(this.data.isChecked);
-      // 获取properties中的数据要加.properties
+      // 获取properties中的数据要加.properties或者.data中获取
       console.log(this.properties.label);
+      console.log(this.data.label, '获取父传子data');
       this.triggerEvent('myEvent', this.data.isChecked)
     },
     // 子传父

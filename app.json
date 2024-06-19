@@ -55,10 +55,12 @@
       }
     ]
   },
-  "style": "v2",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
-    "customCheckbox": "/components/customCheckbox/customCheckbox"
+    "customCheckbox": "/components/customCheckbox/customCheckbox",
+    "custom2": "/components/custom2/custom",
+    "van-image": "@vant/weapp/image/index",
+    "van-button": "@vant/weapp/button/index"
   }
 }

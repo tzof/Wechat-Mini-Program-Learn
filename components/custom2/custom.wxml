@@ -1,0 +1,7 @@
+<!--components/custom2/custom.wxml-->
+<!-- 使用外部传入的样式类要使用externalClasses定义的类名 -->
+<!-- 外部样式和组件内样式采用就近原则 所以使用外部样式时使用!important增加权重 -->
+<view class="extend-class">
+  <text>通过外部样式类修改组件的样式</text>
+  <text class="text2">我是测试文本</text>
+</view>
