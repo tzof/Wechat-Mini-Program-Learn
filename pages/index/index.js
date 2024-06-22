@@ -16,6 +16,8 @@ Page({
     arr1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
     value: '',
     label: '我已阅读并同意用户协议和隐私协议',
+    avatarUrl: 'https://img.yzcdn.cn/vant/cat.jpeg',
+    userName: '用户昵称'
   },
   onTapTest(event) {
     // currentTarget事件绑定的dom
@@ -221,6 +223,22 @@ Page({
   onCLickImg() {
     console.log('点击了图片');
   },
+  // 获取微信头像
+  bindchooseavatar(event) {
+    // event.detail.avatarUrl是微信头像的url
+    // 用event获取的微信头像是临时路径
+    // 临时路径是有时效时间的，在实际开发中要将图片上传至服务器
+    const url = event.detail.avatarUrl;
+    this.setData({
+      avatarUrl: url
+    });
+    console.log(event, event.detail.avatarUrl);
+  },
+  // 获取昵称 表单提交
+  onSubmit(event) {
+    // event.detail中获取form里面所有带有name属性的表单元素的值
+    console.log(event, event.detail.value);
+  },
   /**
    * 生命周期函数--监听页面加载页面创建的时候执行 只会调用一次
    */
@@ -272,9 +290,26 @@ Page({
   },
 
   /**
-   * 用户点击右上角分享
+   * 用户点击右上角分享 不设置不能通过右上角转发 按钮转发可以
+   * 监听页面按钮的转发 以及 右上角的转发按钮
+   * return里面的参数控制分享内容的设置 包括按钮和右上角
    */
-  onShareAppMessage() {
-
-  }
+  onShareAppMessage(obj) {
+    console.log(obj);
+    return {
+      title: 'tzof', // 标题
+      path: '/pages/index/index', // 页面
+      imageUrl: '/assets/flower1.jpg' // 封面，不设置就是页面截图
+    }
+  },
+  // 用户点击右上角分享到朋友圈
+  // 监听右上角菜单“分享到朋友圈”按钮的行为，并自定义分享内容。
+  onShareTimeline() {
+    // return里面的参数控制分享内容的设置
+    return {
+      title: '我是标题', // 标题
+      query: 'id=33', // 传参
+      imageUrl: '/assets/flower1.jpg' // 封面，不设置就是小程序的logo
+    }
+  },
 })

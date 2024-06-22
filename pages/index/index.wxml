@@ -60,4 +60,26 @@
   <!-- // 1、低版本需要修改van组件的样式 需要修改样式隔离styleIsolation为shared
 // 2、使用文档中组件对应的外部样式类 -->
   <van-button type="default">默认按钮</van-button>
+  <!-- 获取头像 -->
+  <view>
+    <van-image width="100" height="100" src="{{avatarUrl}}" />
+    <van-button type="info" open-type="chooseAvatar" bindchooseavatar="bindchooseavatar">获取头像</van-button>
+  </view>
+  <!-- 获取昵称 -->
+  <form bindsubmit="onSubmit">
+    <!-- 如果添加了name属性，form组件submit提交时会自动收集带有name属性的表单元素的值 -->
+    <!-- input的type为nickname时点击input输入框键盘上发会弹出微信昵称 -->
+    <input type="nickname" name="nickname" placeholder="请输入昵称" />
+    <van-button plain type="danger" form-type="submit">设置昵称</van-button>
+  </form>
+  <!-- 分享 -->
+  <!-- 第一种方法js中设置onShareAppMessage钩子函数右上角三个点内可以分享 -->
+  <view>
+    <button type="primary" open-type="share">分享</button>
+  </view>
+  <!-- 分享到朋友圈 -->
+  <!-- 第一种方法js中设置onShareTimeline钩子函数右上角三个点内可以分享到朋友圈 onShareAppMessage也必须设置-->
+  <view>
+    <button type="warn" open-type="share">分享到朋友圈</button>
+  </view>
 </view>
