@@ -74,12 +74,20 @@
   </form>
   <!-- 分享 -->
   <!-- 第一种方法js中设置onShareAppMessage钩子函数右上角三个点内可以分享 -->
+  <!-- 分享到朋友圈 -->
+  <!-- js中设置onShareTimeline钩子函数右上角三个点内可以分享到朋友圈 onShareAppMessage也必须设置-->
   <view>
     <button type="primary" open-type="share">分享</button>
   </view>
-  <!-- 分享到朋友圈 -->
-  <!-- 第一种方法js中设置onShareTimeline钩子函数右上角三个点内可以分享到朋友圈 onShareAppMessage也必须设置-->
-  <view>
-    <button type="warn" open-type="share">分享到朋友圈</button>
-  </view>
+  <!-- 验证手机号 -->
+  <!-- 手机号快速验证 -->
+  <button open-type="getPhoneNumber" type="primary" bindgetphonenumber="getphonenumber" plain>获取手机号</button>
+  <!-- 手机号实时验证 -->
+  <button open-type="getRealtimePhoneNumber	" type="primary" bindgetrealtimephonenumber="getrealtimephonenumber" plain>获取手机号</button>
+  <!-- 客服 -->
+  <button open-type="contact">客服</button>
+  <!-- 获取唯一app实例 page外使用getApp()获取到app的实例 可以获取到app.js中的变量和方法 -->
+  <button type="warn" plain bind:tap="onClickGetApp">获取app</button>
+  <!-- 页面间事件通信通道 eventChannel -->
+  <button plain bind:tap="onClickEventChannelAndGoToPag">跨页面传参并跳转</button>
 </view>
