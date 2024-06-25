@@ -1,4 +1,5 @@
 // components/customCheckbox/customCheckbox.js
+import PubSub from 'pubsub-js'
 import behaviors from '../mixins/behavior' // 导入behaviors
 // components构造页面功能要比page方法强大很多 如observers监听等
 // 可以实现更加复杂逻辑的页面开发
@@ -16,7 +17,13 @@ Component({
     },
     // 组件初始化完成，模版解析完成 已经把组件挂在到页面上并完成渲染 类似mounted
     attached() {
-      console.log('attached');
+      console.log('attached 组件初始化完成，模版解析完成 已经把组件挂在到页面上并完成渲染 类似mounted');
+      // subscribe订阅监听自定义事件 类似于on
+      // 只有在Component组件才生效
+      // 回调函数 msg表示自定义事件名 data表示参数
+      PubSub.subscribe('myPubSubEvent', (msg, data) => {
+        console.log(msg, data, '+++++++++++++++++++++++++++++++');
+      })
     },
     // 组件被销毁时执行
     detached() {

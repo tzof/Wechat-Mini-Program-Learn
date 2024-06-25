@@ -15,6 +15,7 @@ Page({
    */
   onLoad(options) {
     console.log(options);
+    // 只有通过转跳页面打开的页面才有eventChannel实例对象否则为{}空对象
     // 通过this.getOpenerEventChannel方法可以获取eventChannel对象
     const eventChannel = this.getOpenerEventChannel();
     // eventChannel对象提供的on方法 监听页面发射的自定义事件

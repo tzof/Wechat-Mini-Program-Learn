@@ -4,5 +4,6 @@
     "info": "./components/info/info",
     "goodNav": "./components/goodNav/goodNav",
     "scrollBox": "./components/scroll/scroll"
-  }
+  },
+  "navigationStyle": "custom"
 }

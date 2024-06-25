@@ -88,6 +88,11 @@
   <button open-type="contact">客服</button>
   <!-- 获取唯一app实例 page外使用getApp()获取到app的实例 可以获取到app.js中的变量和方法 -->
   <button type="warn" plain bind:tap="onClickGetApp">获取app</button>
-  <!-- 页面间事件通信通道 eventChannel -->
+  <!-- 页面间事件通信通道 eventChannel 被打开页面和打开页面之间的通讯 -->
   <button plain bind:tap="onClickEventChannelAndGoToPag">跨页面传参并跳转</button>
+  <!-- pubsubjs 事件总线 只有在Component组件才生效-->
+  <!--  PubSub.publish(事件名, 变量) 发射自定义事件 类似于emit -->
+  <!--  PubSub.subscribe(事件名, (msg, data) => {}) 阅监听自定义事件 类似于on-->
+  <button bind:tap="onClickPubSubJs">传递给子组件</button>
+  <!-- 自定义导航栏在app或者page的json中设置navigationStyle为custom 就会删除默认导航样式只保留右上角胶囊 -->
 </view>

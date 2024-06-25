@@ -2,6 +2,7 @@
 //  getApp()获取唯一app实例 可以获取到app.js中的变量和方法
 // 在getApp中不要私自调用生命周期函数
 const appInstance = getApp()
+import PubSub from 'pubsub-js'
 Page({
   // options: {
   //   // 低版本需要修改van组件的样式 需要修改样式隔离styleIsolation为shared
@@ -289,6 +290,11 @@ Page({
         })
       }
     })
+  },
+  onClickPubSubJs() {
+    // publish发布发射自定义事件 类似emit
+    console.log(12312312);
+    PubSub.publish('myPubSubEvent', 'tzof')
   },
   /**
    * 生命周期函数--监听页面加载页面创建的时候执行 只会调用一次
