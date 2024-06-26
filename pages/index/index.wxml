@@ -95,4 +95,10 @@
   <!--  PubSub.subscribe(事件名, (msg, data) => {}) 阅监听自定义事件 类似于on-->
   <button bind:tap="onClickPubSubJs">传递给子组件</button>
   <!-- 自定义导航栏在app或者page的json中设置navigationStyle为custom 就会删除默认导航样式只保留右上角胶囊 -->
+
+  <!-- mobx-miniprogram 状态管理工具 类似于vuex pinia -->
+  <!-- 在页面中使用store里面的数据和方法 -->
+  <!-- ComponentWithStore替换js中的组件构造方法Component -->
+  <!-- BehaviorWithStore继续使用Page或者Component构造方法在页面或组件中behaviors:[behaviorsStore]引入 -->
+  <customStore />
 </view>

@@ -19,6 +19,8 @@
   "homepage": "https://github.com/tzof/Wechat-Mini-Program-flower#readme",
   "dependencies": {
     "@vant/weapp": "^1.11.6",
+    "mobx-miniprogram": "^6.12.3",
+    "mobx-miniprogram-bindings": "^3.0.0",
     "pubsub-js": "^1.9.4"
   }
 }

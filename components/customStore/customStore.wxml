@@ -1,0 +1,9 @@
+<!--components/customStore/customStore.wxml-->
+<!-- mobx-miniprogram 状态管理工具 类似于vuex pinia -->
+<!-- 在页面中使用store里面的数据和方法 -->
+<!-- ComponentWithStore替换js中的组件构造方法Component -->
+<!-- BehaviorWithStore继续使用Page或者Component构造方法在页面或组件js中behaviors:[behaviorsStore]引入 -->
+<view>
+  {{numA}}+{{numB}} == {{sum}}
+</view>
+<button type="warn" plain="" bind:tap="update">更新store中的数据</button>

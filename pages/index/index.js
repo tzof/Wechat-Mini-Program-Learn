@@ -2,6 +2,7 @@
 //  getApp()获取唯一app实例 可以获取到app.js中的变量和方法
 // 在getApp中不要私自调用生命周期函数
 const appInstance = getApp()
+// 事件总线
 import PubSub from 'pubsub-js'
 Page({
   // options: {

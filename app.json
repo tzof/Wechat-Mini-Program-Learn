@@ -60,6 +60,7 @@
   "usingComponents": {
     "customCheckbox": "/components/customCheckbox/customCheckbox",
     "custom2": "/components/custom2/custom",
+    "customStore": "/components/customStore/customStore",
     "van-image": "@vant/weapp/image/index",
     "van-button": "@vant/weapp/button/index"
   }
