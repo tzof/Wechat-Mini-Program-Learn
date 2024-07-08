@@ -1,0 +1,4 @@
+<!--components/customComputed/customComputed.wxml-->
+<view bind:tap="changeData">
+  {{total}}
+</view>

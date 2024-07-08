@@ -5,12 +5,14 @@ import {
 } from 'mobx-miniprogram-bindings'
 // 当入当前组件需要使用的store对象
 import numstore from '../..//stores/numstore'
+import stores from '../..//stores/stores'
 // 需要使用ComponentWithStore方法将Component方法进行替换Component({}) --> ComponentWithStore({})
 ComponentWithStore({
   // storeBindings用来配置当前组件需要与哪些store进行关联
   // 注意从store对象中引入方法和数据以后 
   // 如果是数据会被注入到data中
   // 如果是方法会被注入到methods中
+  // storeBindings对象形式 单个store对象
   storeBindings: {
     // store需要用到的store实例
     store: numstore,
@@ -43,7 +45,39 @@ ComponentWithStore({
       update: 'update'
     },
   },
+  // storeBindings数组形式 多个store对象
+  // 数组的每个元素都是一个单独的store对象
+  storeBindings: [{
+      store: numstore,
+      fields: ['numA', 'numB', 'sum'],
+      actions: ['update']
+    },
+    {
+      store: stores,
+      // storeBindings数组写法中如果同个fields变量名或者actions方法名
+      // 第一种方法：使用对象写法的映射写法，并修改key名字
+      fields: {
+        numATwo: 'numA',
+        numBTwo: 'numB',
+        sumTwo: 'sum'
+      },
+      actions: {
+        updateTwo: 'updateTwo'
+      },
+      // 第二种方法: 添加namespace命名空间
+      // namespace只对fields数据生效
+      // 对actions方法不生效，依然得使用对象映射的方式改造
+      // 页面使用命名空间里的数据时候需要对应namespace名字.数据使用
+      namespace: 'twoStore',
+      fields: ['numA', 'numB', 'sum'],
+      actions: {
+        updateTwoTest: 'updateTwo'
+      }
+    }
+  ]
 })
+
+
 // 小程序页面如果要使用store中的数据或方法，并且继续使用Page或者Component构造方法需要behaviors:[behaviorsStore]引入
 // import behaviorsStore from './behaviorStore'
 // Component({
@@ -52,4 +86,18 @@ ComponentWithStore({
 //   attached(){
 //     console.log('"tzpfoifofoofof++++++++++________________!!!!!!!!___');    }
 // }
+// })
+
+
+// 使用storeBindingsBehavior方法，直接在Component内写storeBindings
+// import {
+//   storeBindingsBehavior
+// } from 'mobx-miniprogram-bindings'
+// Component({
+//   behaviors: [storeBindingsBehavior],
+//   storeBindings: {
+//     store: numstore, // 需要用到的store对象实例
+//     fields: ['numA', 'numB', 'sum'], // 需要用的数据 包括计算属性
+//     actions: ['update'] // 需要用到的action方法
+//   },
 // })

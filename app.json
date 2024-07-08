@@ -61,6 +61,8 @@
     "customCheckbox": "/components/customCheckbox/customCheckbox",
     "custom2": "/components/custom2/custom",
     "customStore": "/components/customStore/customStore",
+    "customComputed": "/components/customComputed/customComputed",
+    "customWatch": "/components/customWatch/customWatch",
     "van-image": "@vant/weapp/image/index",
     "van-button": "@vant/weapp/button/index"
   }

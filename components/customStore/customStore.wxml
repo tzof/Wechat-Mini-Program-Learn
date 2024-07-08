@@ -6,4 +6,4 @@
 <view>
   {{numA}}+{{numB}} == {{sum}}
 </view>
-<button type="warn" plain="" bind:tap="update">更新store中的数据</button>
+<button type="warn" plain="" bind:tap="update">更新store中的数据{{twoStore.numB}}</button>

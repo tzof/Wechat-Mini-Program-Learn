@@ -1,0 +1,5 @@
+<!--components/customWatch/customWatch.wxml-->
+<view>
+  <text>{{numA}} {{numC}}</text>
+  <button bind:tap="changeData">更新数据</button>
+</view>

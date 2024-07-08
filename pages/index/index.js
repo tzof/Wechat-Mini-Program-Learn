@@ -31,7 +31,7 @@ Page({
     // 赋值方式修改数据只能更新data中的数据不能更新wxml中的数据 包括delete
     this.data.text = 123;
     console.log(this.data.text);
-    // this.setData({datakey:value}) 里面不需要加this.data
+    // this.setData({datakey:value}) 里面的key不需要加this.data
     let obj = {
       ...this.data.obj1,
       name: "整个对象修改",
