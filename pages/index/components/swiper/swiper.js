@@ -3,9 +3,9 @@ Page({
   onBindchange(e) {
     console.log(e.detail);
   },
-  // onBindtransition(e) {
-  //   console.log(e.detail);
-  // },
+  onBindtransition(e) {
+    console.log(e.detail);
+  },
   onBindanimationfinish(e) {
     console.log(e.detail);
   },
