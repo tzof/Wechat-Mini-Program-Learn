@@ -11,7 +11,7 @@
         <!-- tabBar相互转跳不会销毁页面 返回上一级销毁页面 -->
         <!-- 跳转前要加/否则不转跳 -->
         <!-- 使用url传参，子组件中在onLoad生命周期内options参数接收 -->
-        <navigator url="/pages/list/list?idCard=331004&num=312" open-type="redirect">鲜花商城</navigator>
+        <navigator url="/pages/list/list?idCard=331004&num=312" open-type="redirect" >鲜花商城</navigator>
         <!-- <navigator url="/pages/test/test" open-type="redirect">测试转跳redirect</navigator>
         <navigator url="/pages/cart/cart" open-type="switchTab">测试转跳switchTab</navigator>
         <navigator url="/pages/test/test" open-type="reLaunch">测试转跳reLaunch</navigator>

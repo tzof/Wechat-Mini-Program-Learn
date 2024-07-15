@@ -1,5 +1,4 @@
 <!--pages/index/components/info/info.wxml-->
 <view class="info-box">
   <text wx:for="{{infoArr}}" wx:key="*this"><text class="iconfont icon-{{item.icon}}"></text>{{item.name}}</text>
-  <text class="iconfont icon-honor"></text>
 </view>

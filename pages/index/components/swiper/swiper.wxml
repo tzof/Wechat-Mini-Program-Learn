@@ -1,8 +1,8 @@
 <!--pages/index/components/swiper/swiper.wxml-->
 <view class="swiper-box">
-    <swiper autoplay circular indicator-dots="true" interval="1000">
-        <swiper-item wx:for="{{imgList}}" wx:key="*this">
-            <image src="/assets/{{item}}" mode="" show-menu-by-longpress="" />
-        </swiper-item>
-    </swiper>
+  <swiper autoplay circular indicator-dots="true" interval="2000" indicator-color="#ff0000" indicator-active-color="#00ff00" current="1" easing-function="easeInOutCubic" bindchange="onBindchange" bindanimationfinish="onBindanimationfinish">
+    <swiper-item wx:for="{{imgList}}" wx:key="*this">
+      <image src="/assets/{{item}}" mode="" show-menu-by-longpress="true" />
+    </swiper-item>
+  </swiper>
 </view>
