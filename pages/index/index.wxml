@@ -19,12 +19,16 @@
   <!-- data-*传递参数时会被转换为全部小写 -->
   <!-- mark:*包括次节点到根节点所有的mark数据 -->
   <button bind:tap="onTapTest" data-data="0000" data-tttt="ceshi" mark:testMark="123">测试</button>
+  <view mark:fatherMark="fMark">
+    <button data-testButtonData="btnData" mark:btnMark="btnMark" bind:tap="onBindTapBtnData">测试事件传参</button>
+  </view>
   <!-- 在小程序中input默认没有边框需要自己添加样式 -->
   <!-- catch阻止事件冒泡 bind不阻止 -->
   <!-- model:属性="{{value}}" 双向绑定属性 不支持数据类型也就是数组和对象 -->
   <input type="text" model:value="{{value}}" catchinput="onInputTest" />
   <checkbox checked="{{false}}" />
   <checkbox checked="false" />
+  <checkbox model:checked="{{check}}" />
   <button catch:tap="onClickGetData" type="primary">获取数据</button>
   <button bindtap="onClickExit">exit</button>
   <!-- 本地存储 -->

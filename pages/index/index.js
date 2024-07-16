@@ -20,11 +20,13 @@ Page({
     },
     arr1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
     value: "",
+    check: false,
     label: "我已阅读并同意用户协议和隐私协议",
     avatarUrl: "https://img.yzcdn.cn/vant/cat.jpeg",
     userName: "用户昵称",
   },
   onTapTest(event) {
+    console.log(this.data.check);
     // currentTarget事件绑定的dom
     // target事件触发的dom
     console.log("event tap", event);
@@ -42,6 +44,7 @@ Page({
       "obj1.name": "测试修改对象内的属性",
       "obj1.value": "测试修改value",
       obj1: obj,
+      value: 123312,
     });
     // 删除改变data里的数据不改变wxml中展示的数据，重新将this.data中的数据setData赋值给本身可以修改页面展示数据 在setdata中修改的数据data中也会发生改变
     setTimeout(() => {
@@ -65,6 +68,13 @@ Page({
       });
       console.log(this.data.text);
     }, 4000);
+  },
+  onBindTapBtnData(e) {
+    console.log(e);
+    this.setData({
+      'arr1[0]': 123,
+    })
+    console.log(this.data.arr1);
   },
   onInputTest(event) {
     // event事件对象获取传递的数据 event.detail组件的数据
