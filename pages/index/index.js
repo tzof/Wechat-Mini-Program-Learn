@@ -326,7 +326,7 @@ Page({
    * 生命周期函数--监听页面显示 后台切前台时候也会触发
    */
   onShow() {
-    console.log("onShow", "页面展示的的时候执行");
+    console.log("onShow", "页面显示的的时候执行");
   },
 
   /**

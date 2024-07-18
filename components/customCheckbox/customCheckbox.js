@@ -15,7 +15,7 @@ Component({
     created() {
       console.log('created');
     },
-    // 组件初始化完成，模版解析完成 已经把组件挂在到页面上并完成渲染 类似mounted
+    // 组件初始化完成，模版解析完成 已经把组件挂载到页面上并完成渲染 类似mounted
     attached() {
       console.log('attached 组件初始化完成，模版解析完成 已经把组件挂在到页面上并完成渲染 类似mounted');
       // subscribe订阅监听自定义事件 类似于bus的on
