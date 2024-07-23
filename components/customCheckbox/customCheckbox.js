@@ -133,7 +133,7 @@ Component({
       // 如果需要传递给父组件数据 类似emit
       // triggerEvent发射自定义事件 第一个参数事件名 第二个参数传递的值
       // 父组件内需要添加bind自定义事件命接收
-      this.triggerEvent('myEvent', this.data.num)
+      this.triggerEvent('myEvent', this.data.num + 'tzofnb')
     },
   }
 })

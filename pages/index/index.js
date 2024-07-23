@@ -92,10 +92,13 @@ Page({
     });
     // wx.request发起网络请求
     wx.request({
-      url: "http://127.0.0.1:217/getdata",
+      url: "https://tzof.net:217/logon",
       method: "GET",
       // 请求参数
-      data: {},
+      data: {
+        username: 'blxh',
+        password: 'blxh'
+      },
       // 请求头
       header: {},
       // 成功执行的回调
@@ -174,7 +177,7 @@ Page({
     });
   },
   async getStorage() {
-    console.log(wx.getStorageSync("tzof"), wx.getStorageSync("obj"));
+    console.log(wx.getStorageSync("tzof"), wx.getStorageSync("obj"), wx.getStorageSync("obj2"));
     // 异步 记得添加await
     console.log(
       await wx.getStorage({
@@ -182,8 +185,8 @@ Page({
       })
     );
   },
-  removeStorage() {
-    wx.removeStorageSync("tzof");
+  async removeStorage() {
+    await wx.removeStorage("tzof");
   },
   clearStorage() {
     wx.clearStorageSync();
