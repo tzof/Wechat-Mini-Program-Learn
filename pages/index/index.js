@@ -376,7 +376,7 @@ Page({
     return {
       title: "我是标题", // 标题
       query: "id=33", // 传参
-      imageUrl: "/assets/flower1.jpg", // 封面，不设置就是小程序的logo
+      imageUrl: "/assets/flower1.jpg", // 封面，不设置就是小程序的logo 
     };
   },
 });
