@@ -1,7 +1,6 @@
 import {
   observable,
   action,
-  computed
 } from 'mobx-miniprogram'
 // observable用于创建一个被监测的对象 对象的属性就是应用的状态 状态会被自动转化为响应式数据
 // action 函数是用来显示的定义action方法，action方法用来修改更新状态

@@ -19,7 +19,6 @@ Component({
     attached() {
       console.log('attached 组件初始化完成，模版解析完成 已经把组件挂在到页面上并完成渲染 类似mounted');
       // subscribe订阅监听自定义事件 类似于bus的on
-      // 只有在Component组件才生效
       // 回调函数 msg表示自定义事件名 data表示参数
       PubSub.subscribe('myPubSubEvent', (msg, data) => {
         console.log(msg, data, '+++++++++++++++++++++++++++++++');

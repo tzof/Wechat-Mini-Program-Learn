@@ -308,7 +308,14 @@ Page({
   onClickPubSubJs() {
     // publish发布发射自定义事件 类似emit
     console.log(12312312);
+    PubSub.subscribe('myPubSubEvent', (msg, data) => {
+      console.log(msg, data, '+++++++++++++++++++++++++++++++');
+    })
     PubSub.publish('myPubSubEvent', 'tzof')
+    console.log(123, PubSub.getSubscriptions('myPubSubEvent'));
+    setTimeout(() => {
+      console.log(PubSub.getSubscriptions('myPubSubEvent'));
+    }, 5000);
   },
   /**
    * 生命周期函数--监听页面加载页面创建的时候执行 只会调用一次
