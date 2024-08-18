@@ -109,4 +109,6 @@
   <customComputed />
   <text>watch监听属性</text>
   <customWatch />
+  <!-- 上传文件 -->
+  <button bindtap="onClickUpload">上传文件</button>
 </view>

@@ -10,8 +10,8 @@ import stores from '../..//stores/stores'
 ComponentWithStore({
   // storeBindings用来配置当前组件需要与哪些store进行关联
   // 注意从store对象中引入方法和数据以后 
-  // 如果是数据会被注入到data中
-  // 如果是方法会被注入到methods中
+  // 在storeBindings中如果是数据会被注入到data中
+  // 在storeBindings中如果是方法会被注入到methods中
   // storeBindings对象形式 单个store对象
   storeBindings: {
     // store需要用到的store实例
@@ -20,12 +20,7 @@ ComponentWithStore({
     // fields: ['numA', 'numB', 'sum'], // 数组写法
     // actions需要用到的action方法 会被注入到methods中
     // actions: ['update'], // 数组写法
-    // 如果一个组件或者页面需要绑定多和store对象实例
-    // storeBindings 数组方式使用store
-    // 数组的每一项是一个个要绑定的 store实例对象
-    storeBindings: [],
     // fields和actions有两种写法 数组写法  对象写法
-    // storeBindings
     fields: { // 对象写法 会被注入到data中
       // 如果fields改成对象写法，数据也有两种写法 映射写法 函数写法
       // fields改为对象写法后key可以自定义
@@ -74,7 +69,15 @@ ComponentWithStore({
         updateTwoTest: 'updateTwo'
       }
     }
-  ]
+  ],
+  data: {
+    tzof: 'tzof'
+  },
+  methods: {
+    testFun() {
+      console.log(this.data);
+    },
+  },
 })
 
 

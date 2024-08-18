@@ -317,6 +317,29 @@ Page({
       console.log(PubSub.getSubscriptions('myPubSubEvent'));
     }, 5000);
   },
+  // 上传文件
+  onClickUpload() {
+    wx.chooseMedia({
+      count: 1,
+      sourceType: ['album', 'camera'],
+      camera: 'back',
+      success(res) {
+        let path = res.tempFiles[0].tempFilePath;
+        wx.uploadFile({
+          filePath: path,
+          name: 'file',
+          url: 'https://tzof.net:217/upload',
+          success(res){
+            console.log(res);
+            console.log(JSON.parse(res.data));
+          },
+          fail(){
+            console.log('接口执行完毕');
+          }
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载页面创建的时候执行 只会调用一次
    */
