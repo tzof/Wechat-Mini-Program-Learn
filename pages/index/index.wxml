@@ -73,8 +73,8 @@
   <form bindsubmit="onSubmit">
     <!-- 如果添加了name属性，form组件submit提交时会自动收集带有name属性的表单元素的值 -->
     <!-- input的type为nickname时点击input输入框键盘上发会弹出微信昵称 -->
-    <input type="nickname" name="nickname" placeholder="请输入昵称" />
-    <van-button plain type="danger" form-type="submit">设置昵称</van-button>
+    <input type="nickname" name="nickName" placeholder="请输入昵称" />
+    <van-button plain type="danger" form-type="submit">保存个人信息</van-button>
   </form>
   <!-- 分享 -->
   <!-- 第一种方法js中设置onShareAppMessage钩子函数右上角三个点内可以分享 -->

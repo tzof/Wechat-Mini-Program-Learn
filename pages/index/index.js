@@ -24,6 +24,7 @@ Page({
     label: "我已阅读并同意用户协议和隐私协议",
     avatarUrl: "https://img.yzcdn.cn/vant/cat.jpeg",
     userName: "用户昵称",
+    openId: null,
   },
   onTapTest(event) {
     console.log(this.data.check);
@@ -253,11 +254,41 @@ Page({
       avatarUrl: url,
     });
     console.log(event, event.detail.avatarUrl);
+    wx.uploadFile({
+      filePath: this.data.avatarUrl,
+      name: 'file',
+      url: 'https://tzof.net:217/upload',
+      success: (res) => {
+        console.log(res);
+        this.setData({
+          avatarUrl: JSON.parse(res.data).avatarUrl,
+          fileName: JSON.parse(res.data).fileName
+        })
+      },
+      fail() {
+        console.log('接口执行完毕');
+      }
+    })
   },
   // 获取昵称 表单提交
   onSubmit(event) {
-    // event.detail中获取form里面所有带有name属性的表单元素的值
-    console.log(event, event.detail.value);
+    // event.detail.value中获取form里面所有带有name属性的表单元素的值
+    console.log(event.detail.value, event.detail.value.nickName);
+    let obj = {
+      openId: this.data.openId,
+      avatarfileName: this.data.fileName,
+      avatarUrl: this.data.avatarUrl,
+      nickName: event.detail.value.nickName
+    };
+    console.log(obj);
+    wx.request({
+      url: 'https://tzof.net:217/setUserinfo',
+      method: 'POST',
+      data: obj,
+      success(res) {
+        console.log(res);
+      }
+    })
   },
   // 获取手机号
   // 快速验证
@@ -329,14 +360,41 @@ Page({
           filePath: path,
           name: 'file',
           url: 'https://tzof.net:217/upload',
-          success(res){
+          success(res) {
             console.log(res);
             console.log(JSON.parse(res.data));
           },
-          fail(){
+          fail() {
             console.log('接口执行完毕');
           }
         })
+      }
+    })
+  },
+  // 登录
+  login() {
+    wx.login({
+      success: (res) => {
+        console.log(res);
+        if (res.code) {
+          wx.request({
+            url: "https://tzof.net:217/login",
+            method: 'POST',
+            data: {
+              code: res.code
+            },
+            success: (res) => {
+              console.log(res.data);
+              this.setData({
+                openId: res.data.openId
+              })
+              console.log(this.data.openId);
+            }
+          })
+        }
+      },
+      fail: (err) => {
+
       }
     })
   },
@@ -345,6 +403,7 @@ Page({
    */
   onLoad(options) {
     console.log("onLoad", "页面创建的时候执行");
+    this.login();
   },
 
   /**
