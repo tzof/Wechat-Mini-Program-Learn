@@ -4,6 +4,11 @@
 const appInstance = getApp()
 // 事件总线
 import PubSub from 'pubsub-js'
+
+// 自定义封装axios 请求工具
+import {
+  axiosWx
+} from '../../fetch/api'
 Page({
   // options: {
   //   // 低版本需要修改van组件的样式 需要修改样式隔离styleIsolation为shared
@@ -377,20 +382,23 @@ Page({
       success: (res) => {
         console.log(res);
         if (res.code) {
-          wx.request({
-            url: "https://tzof.net:217/login",
-            method: 'POST',
-            data: {
-              code: res.code
-            },
-            success: (res) => {
-              console.log(res.data);
-              this.setData({
-                openId: res.data.openId
-              })
-              console.log(this.data.openId);
-            }
-          })
+          // axiosWx('POST', '/login', {
+          //   code: res.code
+          // })
+          // wx.request({
+          //   url: "https://tzof.net:217/login",
+          //   method: 'POST',
+          //   data: {
+          //     code: res.code
+          //   },
+          //   success: (res) => {
+          //     console.log(res.data);
+          //     this.setData({
+          //       openId: res.data.openId
+          //     })
+          //     console.log(this.data.openId);
+          //   }
+          // })
         }
       },
       fail: (err) => {
