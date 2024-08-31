@@ -382,9 +382,9 @@ Page({
       success: (res) => {
         console.log(res);
         if (res.code) {
-          // axiosWx('POST', '/login', {
-          //   code: res.code
-          // })
+          axiosWx('POST', '/login', {
+            code: res.code
+          })
           // wx.request({
           //   url: "https://tzof.net:217/login",
           //   method: 'POST',

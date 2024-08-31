@@ -5,14 +5,14 @@ import mpAdapter from 'axios-miniprogram-adapter'
 axios.defaults.adapter = mpAdapter
 // 创建一个axios实例
 const instance = axios.create({
-  baseURL: 'https://tzof.net:217/upload',
+  baseURL: 'https://tzof.net:217',
   timeout: 10000,
 });
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  config.headers.Authorization = Cookies.get('token')
+  // config.headers.Authorization = Cookies.get('token')
   return config;
 }, function (error) {
   // 对请求错误做些什么
