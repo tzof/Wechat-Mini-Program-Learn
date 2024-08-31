@@ -44,7 +44,7 @@ ComponentWithStore({
   // 数组的每个元素都是一个单独的store对象
   storeBindings: [{
       store: numstore,
-      fields: ['numA', 'numB', 'sum'],
+      fields: ['numA', 'numB', 'sum', 'title'],
       actions: ['update']
     },
     {
@@ -76,6 +76,7 @@ ComponentWithStore({
   methods: {
     testFun() {
       console.log(this.data);
+      this.update(new Date()+'')
     },
   },
 })

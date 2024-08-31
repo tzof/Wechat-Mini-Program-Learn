@@ -11,14 +11,17 @@ const numstore = observable({
   // 对象的属性就是应用的状态 状态会被自动转化为响应式数据
   numA: 1,
   numB: 2,
+  title: '11111111',
 
   // action 定义action方法用来修改状态
   // update是方法自定义方法名
   // 注意action中不能使用箭头函数()=>{}因为箭头函数指向触发这个方法的位置也就是page页面或者component组件，只有this指向observable对象才能获取到状态
-  update: action(function () {
+  update: action(function (str) {
     // 在方法中如果需要获取应用的状态可以使用this获取
     this.numA += 1;
     this.numB -= 1;
+    console.log(this.numB,str);
+    this.title = str;
   }),
 
   // computed 计算属性

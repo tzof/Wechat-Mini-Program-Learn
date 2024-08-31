@@ -46,9 +46,13 @@ export function axiosWx(method, url, params) {
       'Content-Type': 'application/json'
     }
   }
-  instance(axiosParams).then(res => {
-    console.log(res);
-  }).catch(err => {
-    console.log(err);
+  // 返回一个promise对象 引用的地方可以使用.then或者await获取res数据
+  return new Promise((resolve, reject) => {
+    instance(axiosParams).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
   })
+
 }

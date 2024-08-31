@@ -1,6 +1,7 @@
 <!--pages/index/index.wxml-->
 <view class="index">
   <swiperBox />
+  {{token}}
   <info />
   <goodNav />
   <scrollBox />

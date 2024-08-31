@@ -5,5 +5,7 @@
 <!-- BehaviorWithStore继续使用Page或者Component构造方法在页面或组件js中behaviors:[behaviorsStore]引入 -->
 <view>
   {{numA}}+{{numB}} == {{sum}}
+  <br/>
+  {{title}}
 </view>
-<button type="warn" plain="" bind:tap="update">更新store中的数据{{twoStore.numB}}</button>
+<button type="warn" plain="" bind:tap="testFun">更新store中的数据{{twoStore.numB}}</button>

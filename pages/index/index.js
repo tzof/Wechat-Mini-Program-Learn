@@ -5,6 +5,11 @@ const appInstance = getApp()
 // 事件总线
 import PubSub from 'pubsub-js'
 
+import {
+  createStoreBindings,
+} from 'mobx-miniprogram-bindings'
+import userStores from '../../stores/user'
+
 // 自定义封装axios 请求工具
 import {
   axiosWx
@@ -30,6 +35,7 @@ Page({
     avatarUrl: "https://img.yzcdn.cn/vant/cat.jpeg",
     userName: "用户昵称",
     openId: null,
+    storeBindings: {},
   },
   onTapTest(event) {
     console.log(this.data.check);
@@ -384,6 +390,9 @@ Page({
         if (res.code) {
           axiosWx('POST', '/login', {
             code: res.code
+          }).then(res => {
+            console.log(res);
+            this.setToken(res.data.token);
           })
           // wx.request({
           //   url: "https://tzof.net:217/login",
@@ -411,6 +420,11 @@ Page({
    */
   onLoad(options) {
     console.log("onLoad", "页面创建的时候执行");
+    this.storeBindings = createStoreBindings(this, {
+      store: userStores,
+      fields: ['token', 'openId', 'userinfo'],
+      actions: ['setToken', 'setOpenId', 'setUserinfo'],
+    })
     this.login();
   },
 
@@ -441,6 +455,7 @@ Page({
    */
   onUnload() {
     console.log("onUnload", "页面销毁时触发");
+    this.storeBindings.destroyStoreBindings();
   },
 
   /**
