@@ -1,3 +1,2 @@
 <!--pages/list/list.wxml-->
 <text>pages/list/list.wxml</text>
-<button bindtap="navigateBack">navigateBack</button>  

@@ -65,5 +65,15 @@
     "customWatch": "/components/customWatch/customWatch",
     "van-image": "@vant/weapp/image/index",
     "van-button": "@vant/weapp/button/index"
-  }
+  },
+  "subPackages": [
+    {
+     "root": "packageA",
+     "name": "list",
+     "pages": [
+       "list/list",
+       "test/test"
+     ]
+    }
+  ]
 }

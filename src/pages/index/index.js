@@ -412,7 +412,7 @@ Page({
         console.log(res);
         if (res.code) {
           login({
-            code: res.code
+            // code: res.code
           }).then(res => {
             console.log(res);
             this.setData({
