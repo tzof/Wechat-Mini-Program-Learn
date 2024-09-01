@@ -18,8 +18,12 @@ import {
   login
 } from '../../fetch/login'
 import {
+  getUserinfo,
   setUserinfo
 } from '../../fetch/user'
+import {
+  upload,
+} from '../../fetch/upload'
 Page({
   // options: {
   //   // 低版本需要修改van组件的样式 需要修改样式隔离styleIsolation为shared
@@ -271,21 +275,27 @@ Page({
       avatarUrl: url,
     });
     console.log(event, event.detail.avatarUrl);
-    wx.uploadFile({
-      filePath: this.data.avatarUrl,
-      name: 'file',
-      url: 'https://tzof.net:217/upload',
-      success: (res) => {
-        console.log(res);
-        this.setData({
-          avatarUrl: JSON.parse(res.data).avatarUrl,
-          fileName: JSON.parse(res.data).fileName
-        })
-      },
-      fail() {
-        console.log('接口执行完毕');
-      }
+    upload({
+      file: this.data.avatarUrl,
+    }).then(res => {
+      console.log(res, '我是上传oss');
     })
+    // wx.uploadFile({
+    //   filePath: this.data.avatarUrl,
+    //   name: 'file',
+    //   url: 'https://tzof.net:217/upload',
+    //   header: {'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcGVuaWQiOiJvUDc5dTVIakNGcVNRRzRXVEZTeWk1Y1owbmhVIiwiaWF0IjoxNzI1MTc3NzcxLCJleHAiOjE3MjUxODEzNzF9.TLnzJTWZxHK268Zkt_otykyuuHFH_6cgGSf1egNYQYY'},
+    //   success: (res) => {
+    //     console.log(res);
+    //     this.setData({
+    //       avatarUrl: JSON.parse(res.data).avatarUrl,
+    //       fileName: JSON.parse(res.data).fileName
+    //     })
+    //   },
+    //   fail() {
+    //     console.log('接口执行完毕');
+    //   }
+    // })
   },
   // 获取昵称 表单提交
   onSubmit(event) {

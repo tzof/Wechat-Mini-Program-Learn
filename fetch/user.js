@@ -3,6 +3,10 @@ import {
   axiosWx
 } from './api'
 
-export const setUserinfo = (params) => {
+export const getUserinfo = (params) => {
   return axiosWx('POST', '/getUserinfo', params);
+};
+
+export const setUserinfo = (params) => {
+  return axiosWx('POST', '/setUserinfo', params);
 };

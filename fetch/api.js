@@ -1,6 +1,9 @@
 import axios from 'axios'
 // 特定于微信小程序的适配器
 import mpAdapter from 'axios-miniprogram-adapter'
+import {
+  upload
+} from './upload';
 // 使用适配器
 axios.defaults.adapter = mpAdapter
 // 创建一个axios实例
@@ -12,7 +15,7 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  const token =wx.getStorageSync('token');
+  const token = wx.getStorageSync('token');
   config.headers.Authorization = token;
   return config;
 }, function (error) {
@@ -56,4 +59,26 @@ export function axiosWx(method, url, params) {
     })
   })
 
+}
+
+export function uploadFile(url, params) {
+  const filePath = params.file;
+  delete params.file
+  return new Promise((resolve, reject) => {
+    wx.uploadFile({
+      filePath,
+      name: 'file',
+      url: instance.defaults.baseURL + url,
+      formData: params,
+      header: {
+        'authorization': wx.getStorageSync('token')
+      },
+      success: (res) => {
+        resolve(res)
+      },
+      fail: (err) => {
+        reject(err)
+      }
+    })
+  })
 }
