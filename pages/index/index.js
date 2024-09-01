@@ -11,9 +11,15 @@ import {
 import userStores from '../../stores/user'
 
 // 自定义封装axios 请求工具
+// import {
+//   axiosWx
+// } from '../../fetch/api' 
 import {
-  axiosWx
-} from '../../fetch/api'
+  login
+} from '../../fetch/login'
+import {
+  setUserinfo
+} from '../../fetch/user'
 Page({
   // options: {
   //   // 低版本需要修改van组件的样式 需要修改样式隔离styleIsolation为shared
@@ -292,14 +298,17 @@ Page({
       nickName: event.detail.value.nickName
     };
     console.log(obj);
-    wx.request({
-      url: 'https://tzof.net:217/setUserinfo',
-      method: 'POST',
-      data: obj,
-      success(res) {
-        console.log(res);
-      }
+    setUserinfo(obj).then(res => {
+      console.log(res);
     })
+    // wx.request({
+    //   url: 'https://tzof.net:217/setUserinfo',
+    //   method: 'POST',
+    //   data: obj,
+    //   success(res) {
+    //     console.log(res);
+    //   }
+    // })
   },
   // 获取手机号
   // 快速验证
@@ -388,11 +397,12 @@ Page({
       success: (res) => {
         console.log(res);
         if (res.code) {
-          axiosWx('POST', '/login', {
+          login({
             code: res.code
           }).then(res => {
             console.log(res);
             this.setToken(res.data.token);
+            wx.setStorageSync('token', res.data.token)
           })
           // wx.request({
           //   url: "https://tzof.net:217/login",
