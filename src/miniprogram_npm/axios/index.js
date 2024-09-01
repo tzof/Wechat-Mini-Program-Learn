@@ -4,16 +4,15 @@ var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexport
 var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1725127877709, function(require, module, exports) {
+__DEFINE__(1725212578346, function(require, module, exports) {
 module.exports = require('./lib/axios');
-}, function(modId) {var map = {"./lib/axios":1725127877710}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877710, function(require, module, exports) {
+}, function(modId) {var map = {"./lib/axios":1725212578347}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578347, function(require, module, exports) {
 
 
 var utils = require('./utils');
 var bind = require('./helpers/bind');
 var Axios = require('./core/Axios');
-var mergeConfig = require('./core/mergeConfig');
 var defaults = require('./defaults');
 
 /**
@@ -43,7 +42,7 @@ axios.Axios = Axios;
 
 // Factory for creating new instances
 axios.create = function create(instanceConfig) {
-  return createInstance(mergeConfig(axios.defaults, instanceConfig));
+  return createInstance(utils.merge(defaults, instanceConfig));
 };
 
 // Expose Cancel & CancelToken
@@ -62,11 +61,12 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-}, function(modId) { var map = {"./utils":1725127877711,"./helpers/bind":1725127877712,"./core/Axios":1725127877713,"./core/mergeConfig":1725127877733,"./defaults":1725127877719,"./cancel/Cancel":1725127877734,"./cancel/CancelToken":1725127877735,"./cancel/isCancel":1725127877718,"./helpers/spread":1725127877736}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877711, function(require, module, exports) {
+}, function(modId) { var map = {"./utils":1725212578348,"./helpers/bind":1725212578349,"./core/Axios":1725212578350,"./defaults":1725212578351,"./cancel/Cancel":1725212578369,"./cancel/CancelToken":1725212578370,"./cancel/isCancel":1725212578366,"./helpers/spread":1725212578371}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578348, function(require, module, exports) {
 
 
 var bind = require('./helpers/bind');
+var isBuffer = require('is-buffer');
 
 /*global toString:true*/
 
@@ -82,27 +82,6 @@ var toString = Object.prototype.toString;
  */
 function isArray(val) {
   return toString.call(val) === '[object Array]';
-}
-
-/**
- * Determine if a value is undefined
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if the value is undefined, otherwise false
- */
-function isUndefined(val) {
-  return typeof val === 'undefined';
-}
-
-/**
- * Determine if a value is a Buffer
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Buffer, otherwise false
- */
-function isBuffer(val) {
-  return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor)
-    && typeof val.constructor.isBuffer === 'function' && val.constructor.isBuffer(val);
 }
 
 /**
@@ -159,6 +138,16 @@ function isString(val) {
  */
 function isNumber(val) {
   return typeof val === 'number';
+}
+
+/**
+ * Determine if a value is undefined
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+function isUndefined(val) {
+  return typeof val === 'undefined';
 }
 
 /**
@@ -253,13 +242,9 @@ function trim(str) {
  *
  * react-native:
  *  navigator.product -> 'ReactNative'
- * nativescript
- *  navigator.product -> 'NativeScript' or 'NS'
  */
 function isStandardBrowserEnv() {
-  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
-                                           navigator.product === 'NativeScript' ||
-                                           navigator.product === 'NS')) {
+  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
     return false;
   }
   return (
@@ -341,32 +326,6 @@ function merge(/* obj1, obj2, obj3, ... */) {
 }
 
 /**
- * Function equal to merge with the difference being that no reference
- * to original objects is kept.
- *
- * @see merge
- * @param {Object} obj1 Object to merge
- * @returns {Object} Result of all merge properties
- */
-function deepMerge(/* obj1, obj2, obj3, ... */) {
-  var result = {};
-  function assignValue(val, key) {
-    if (typeof result[key] === 'object' && typeof val === 'object') {
-      result[key] = deepMerge(result[key], val);
-    } else if (typeof val === 'object') {
-      result[key] = deepMerge({}, val);
-    } else {
-      result[key] = val;
-    }
-  }
-
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
-  }
-  return result;
-}
-
-/**
  * Extends object a by mutably adding to it the properties of object b.
  *
  * @param {Object} a The object to be extended
@@ -404,13 +363,12 @@ module.exports = {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
-  deepMerge: deepMerge,
   extend: extend,
   trim: trim
 };
 
-}, function(modId) { var map = {"./helpers/bind":1725127877712}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877712, function(require, module, exports) {
+}, function(modId) { var map = {"./helpers/bind":1725212578349}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578349, function(require, module, exports) {
 
 
 module.exports = function bind(fn, thisArg) {
@@ -424,14 +382,13 @@ module.exports = function bind(fn, thisArg) {
 };
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877713, function(require, module, exports) {
+__DEFINE__(1725212578350, function(require, module, exports) {
 
 
+var defaults = require('./../defaults');
 var utils = require('./../utils');
-var buildURL = require('../helpers/buildURL');
 var InterceptorManager = require('./InterceptorManager');
 var dispatchRequest = require('./dispatchRequest');
-var mergeConfig = require('./mergeConfig');
 
 /**
  * Create a new instance of Axios
@@ -455,22 +412,13 @@ Axios.prototype.request = function request(config) {
   /*eslint no-param-reassign:0*/
   // Allow for axios('example/url'[, config]) a la fetch API
   if (typeof config === 'string') {
-    config = arguments[1] || {};
-    config.url = arguments[0];
-  } else {
-    config = config || {};
+    config = utils.merge({
+      url: arguments[0]
+    }, arguments[1]);
   }
 
-  config = mergeConfig(this.defaults, config);
-
-  // Set config.method
-  if (config.method) {
-    config.method = config.method.toLowerCase();
-  } else if (this.defaults.method) {
-    config.method = this.defaults.method.toLowerCase();
-  } else {
-    config.method = 'get';
-  }
+  config = utils.merge(defaults, {method: 'get'}, this.defaults, config);
+  config.method = config.method.toLowerCase();
 
   // Hook up interceptors middleware
   var chain = [dispatchRequest, undefined];
@@ -489,11 +437,6 @@ Axios.prototype.request = function request(config) {
   }
 
   return promise;
-};
-
-Axios.prototype.getUri = function getUri(config) {
-  config = mergeConfig(this.defaults, config);
-  return buildURL(config.url, config.params, config.paramsSerializer).replace(/^\?/, '');
 };
 
 // Provide aliases for supported request methods
@@ -520,250 +463,8 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-}, function(modId) { var map = {"./../utils":1725127877711,"../helpers/buildURL":1725127877714,"./InterceptorManager":1725127877715,"./dispatchRequest":1725127877716,"./mergeConfig":1725127877733}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877714, function(require, module, exports) {
-
-
-var utils = require('./../utils');
-
-function encode(val) {
-  return encodeURIComponent(val).
-    replace(/%40/gi, '@').
-    replace(/%3A/gi, ':').
-    replace(/%24/g, '$').
-    replace(/%2C/gi, ',').
-    replace(/%20/g, '+').
-    replace(/%5B/gi, '[').
-    replace(/%5D/gi, ']');
-}
-
-/**
- * Build a URL by appending params to the end
- *
- * @param {string} url The base of the url (e.g., http://www.google.com)
- * @param {object} [params] The params to be appended
- * @returns {string} The formatted url
- */
-module.exports = function buildURL(url, params, paramsSerializer) {
-  /*eslint no-param-reassign:0*/
-  if (!params) {
-    return url;
-  }
-
-  var serializedParams;
-  if (paramsSerializer) {
-    serializedParams = paramsSerializer(params);
-  } else if (utils.isURLSearchParams(params)) {
-    serializedParams = params.toString();
-  } else {
-    var parts = [];
-
-    utils.forEach(params, function serialize(val, key) {
-      if (val === null || typeof val === 'undefined') {
-        return;
-      }
-
-      if (utils.isArray(val)) {
-        key = key + '[]';
-      } else {
-        val = [val];
-      }
-
-      utils.forEach(val, function parseValue(v) {
-        if (utils.isDate(v)) {
-          v = v.toISOString();
-        } else if (utils.isObject(v)) {
-          v = JSON.stringify(v);
-        }
-        parts.push(encode(key) + '=' + encode(v));
-      });
-    });
-
-    serializedParams = parts.join('&');
-  }
-
-  if (serializedParams) {
-    var hashmarkIndex = url.indexOf('#');
-    if (hashmarkIndex !== -1) {
-      url = url.slice(0, hashmarkIndex);
-    }
-
-    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
-  }
-
-  return url;
-};
-
-}, function(modId) { var map = {"./../utils":1725127877711}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877715, function(require, module, exports) {
-
-
-var utils = require('./../utils');
-
-function InterceptorManager() {
-  this.handlers = [];
-}
-
-/**
- * Add a new interceptor to the stack
- *
- * @param {Function} fulfilled The function to handle `then` for a `Promise`
- * @param {Function} rejected The function to handle `reject` for a `Promise`
- *
- * @return {Number} An ID used to remove interceptor later
- */
-InterceptorManager.prototype.use = function use(fulfilled, rejected) {
-  this.handlers.push({
-    fulfilled: fulfilled,
-    rejected: rejected
-  });
-  return this.handlers.length - 1;
-};
-
-/**
- * Remove an interceptor from the stack
- *
- * @param {Number} id The ID that was returned by `use`
- */
-InterceptorManager.prototype.eject = function eject(id) {
-  if (this.handlers[id]) {
-    this.handlers[id] = null;
-  }
-};
-
-/**
- * Iterate over all the registered interceptors
- *
- * This method is particularly useful for skipping over any
- * interceptors that may have become `null` calling `eject`.
- *
- * @param {Function} fn The function to call for each interceptor
- */
-InterceptorManager.prototype.forEach = function forEach(fn) {
-  utils.forEach(this.handlers, function forEachHandler(h) {
-    if (h !== null) {
-      fn(h);
-    }
-  });
-};
-
-module.exports = InterceptorManager;
-
-}, function(modId) { var map = {"./../utils":1725127877711}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877716, function(require, module, exports) {
-
-
-var utils = require('./../utils');
-var transformData = require('./transformData');
-var isCancel = require('../cancel/isCancel');
-var defaults = require('../defaults');
-
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-function throwIfCancellationRequested(config) {
-  if (config.cancelToken) {
-    config.cancelToken.throwIfRequested();
-  }
-}
-
-/**
- * Dispatch a request to the server using the configured adapter.
- *
- * @param {object} config The config that is to be used for the request
- * @returns {Promise} The Promise to be fulfilled
- */
-module.exports = function dispatchRequest(config) {
-  throwIfCancellationRequested(config);
-
-  // Ensure headers exist
-  config.headers = config.headers || {};
-
-  // Transform request data
-  config.data = transformData(
-    config.data,
-    config.headers,
-    config.transformRequest
-  );
-
-  // Flatten headers
-  config.headers = utils.merge(
-    config.headers.common || {},
-    config.headers[config.method] || {},
-    config.headers
-  );
-
-  utils.forEach(
-    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
-    function cleanHeaderConfig(method) {
-      delete config.headers[method];
-    }
-  );
-
-  var adapter = config.adapter || defaults.adapter;
-
-  return adapter(config).then(function onAdapterResolution(response) {
-    throwIfCancellationRequested(config);
-
-    // Transform response data
-    response.data = transformData(
-      response.data,
-      response.headers,
-      config.transformResponse
-    );
-
-    return response;
-  }, function onAdapterRejection(reason) {
-    if (!isCancel(reason)) {
-      throwIfCancellationRequested(config);
-
-      // Transform response data
-      if (reason && reason.response) {
-        reason.response.data = transformData(
-          reason.response.data,
-          reason.response.headers,
-          config.transformResponse
-        );
-      }
-    }
-
-    return Promise.reject(reason);
-  });
-};
-
-}, function(modId) { var map = {"./../utils":1725127877711,"./transformData":1725127877717,"../cancel/isCancel":1725127877718,"../defaults":1725127877719}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877717, function(require, module, exports) {
-
-
-var utils = require('./../utils');
-
-/**
- * Transform the data for a request or a response
- *
- * @param {Object|String} data The data to be transformed
- * @param {Array} headers The headers for the request or response
- * @param {Array|Function} fns A single function or Array of functions
- * @returns {*} The resulting transformed data
- */
-module.exports = function transformData(data, headers, fns) {
-  /*eslint no-param-reassign:0*/
-  utils.forEach(fns, function transform(fn) {
-    data = fn(data, headers);
-  });
-
-  return data;
-};
-
-}, function(modId) { var map = {"./../utils":1725127877711}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877718, function(require, module, exports) {
-
-
-module.exports = function isCancel(value) {
-  return !!(value && value.__CANCEL__);
-};
-
-}, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877719, function(require, module, exports) {
+}, function(modId) { var map = {"./../defaults":1725212578351,"./../utils":1725212578348,"./InterceptorManager":1725212578363,"./dispatchRequest":1725212578364}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578351, function(require, module, exports) {
 
 
 var utils = require('./utils');
@@ -784,7 +485,7 @@ function getDefaultAdapter() {
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
     adapter = require('./adapters/xhr');
-  } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
+  } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
     adapter = require('./adapters/http');
   }
@@ -795,7 +496,6 @@ var defaults = {
   adapter: getDefaultAdapter(),
 
   transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Accept');
     normalizeHeaderName(headers, 'Content-Type');
     if (utils.isFormData(data) ||
       utils.isArrayBuffer(data) ||
@@ -862,8 +562,8 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-}, function(modId) { var map = {"./utils":1725127877711,"./helpers/normalizeHeaderName":1725127877720,"./adapters/xhr":1725127877721,"./adapters/http":1725127877731}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877720, function(require, module, exports) {
+}, function(modId) { var map = {"./utils":1725212578348,"./helpers/normalizeHeaderName":1725212578352,"./adapters/xhr":1725212578353,"./adapters/http":1725212578361}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578352, function(require, module, exports) {
 
 
 var utils = require('../utils');
@@ -877,14 +577,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-}, function(modId) { var map = {"../utils":1725127877711}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877721, function(require, module, exports) {
+}, function(modId) { var map = {"../utils":1725212578348}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578353, function(require, module, exports) {
 
 
 var utils = require('./../utils');
 var settle = require('./../core/settle');
 var buildURL = require('./../helpers/buildURL');
-var buildFullPath = require('../core/buildFullPath');
 var parseHeaders = require('./../helpers/parseHeaders');
 var isURLSameOrigin = require('./../helpers/isURLSameOrigin');
 var createError = require('../core/createError');
@@ -907,8 +606,7 @@ module.exports = function xhrAdapter(config) {
       requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
     }
 
-    var fullPath = buildFullPath(config.baseURL, config.url);
-    request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
 
     // Set the request timeout in MS
     request.timeout = config.timeout;
@@ -945,18 +643,6 @@ module.exports = function xhrAdapter(config) {
       request = null;
     };
 
-    // Handle browser request cancellation (as opposed to a manual cancellation)
-    request.onabort = function handleAbort() {
-      if (!request) {
-        return;
-      }
-
-      reject(createError('Request aborted', config, 'ECONNABORTED', request));
-
-      // Clean up request
-      request = null;
-    };
-
     // Handle low level network errors
     request.onerror = function handleError() {
       // Real errors are hidden from us by the browser
@@ -969,11 +655,7 @@ module.exports = function xhrAdapter(config) {
 
     // Handle timeout
     request.ontimeout = function handleTimeout() {
-      var timeoutErrorMessage = 'timeout of ' + config.timeout + 'ms exceeded';
-      if (config.timeoutErrorMessage) {
-        timeoutErrorMessage = config.timeoutErrorMessage;
-      }
-      reject(createError(timeoutErrorMessage, config, 'ECONNABORTED',
+      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED',
         request));
 
       // Clean up request
@@ -987,9 +669,9 @@ module.exports = function xhrAdapter(config) {
       var cookies = require('./../helpers/cookies');
 
       // Add xsrf header
-      var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
-        cookies.read(config.xsrfCookieName) :
-        undefined;
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
+          cookies.read(config.xsrfCookieName) :
+          undefined;
 
       if (xsrfValue) {
         requestHeaders[config.xsrfHeaderName] = xsrfValue;
@@ -1010,8 +692,8 @@ module.exports = function xhrAdapter(config) {
     }
 
     // Add withCredentials to request if needed
-    if (!utils.isUndefined(config.withCredentials)) {
-      request.withCredentials = !!config.withCredentials;
+    if (config.withCredentials) {
+      request.withCredentials = true;
     }
 
     // Add responseType to request if needed
@@ -1060,8 +742,8 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-}, function(modId) { var map = {"./../utils":1725127877711,"./../core/settle":1725127877722,"./../helpers/buildURL":1725127877714,"../core/buildFullPath":1725127877725,"./../helpers/parseHeaders":1725127877728,"./../helpers/isURLSameOrigin":1725127877729,"../core/createError":1725127877723,"./../helpers/cookies":1725127877730}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877722, function(require, module, exports) {
+}, function(modId) { var map = {"./../utils":1725212578348,"./../core/settle":1725212578354,"./../helpers/buildURL":1725212578357,"./../helpers/parseHeaders":1725212578358,"./../helpers/isURLSameOrigin":1725212578359,"../core/createError":1725212578355,"./../helpers/cookies":1725212578360}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578354, function(require, module, exports) {
 
 
 var createError = require('./createError');
@@ -1075,7 +757,8 @@ var createError = require('./createError');
  */
 module.exports = function settle(resolve, reject, response) {
   var validateStatus = response.config.validateStatus;
-  if (!validateStatus || validateStatus(response.status)) {
+  // Note: status is not exposed by XDomainRequest
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
     reject(createError(
@@ -1088,8 +771,8 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-}, function(modId) { var map = {"./createError":1725127877723}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877723, function(require, module, exports) {
+}, function(modId) { var map = {"./createError":1725212578355}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578355, function(require, module, exports) {
 
 
 var enhanceError = require('./enhanceError');
@@ -1109,8 +792,8 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-}, function(modId) { var map = {"./enhanceError":1725127877724}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877724, function(require, module, exports) {
+}, function(modId) { var map = {"./enhanceError":1725212578356}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578356, function(require, module, exports) {
 
 
 /**
@@ -1128,91 +811,82 @@ module.exports = function enhanceError(error, config, code, request, response) {
   if (code) {
     error.code = code;
   }
-
   error.request = request;
   error.response = response;
-  error.isAxiosError = true;
-
-  error.toJSON = function() {
-    return {
-      // Standard
-      message: this.message,
-      name: this.name,
-      // Microsoft
-      description: this.description,
-      number: this.number,
-      // Mozilla
-      fileName: this.fileName,
-      lineNumber: this.lineNumber,
-      columnNumber: this.columnNumber,
-      stack: this.stack,
-      // Axios
-      config: this.config,
-      code: this.code
-    };
-  };
   return error;
 };
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877725, function(require, module, exports) {
+__DEFINE__(1725212578357, function(require, module, exports) {
 
 
-var isAbsoluteURL = require('../helpers/isAbsoluteURL');
-var combineURLs = require('../helpers/combineURLs');
+var utils = require('./../utils');
+
+function encode(val) {
+  return encodeURIComponent(val).
+    replace(/%40/gi, '@').
+    replace(/%3A/gi, ':').
+    replace(/%24/g, '$').
+    replace(/%2C/gi, ',').
+    replace(/%20/g, '+').
+    replace(/%5B/gi, '[').
+    replace(/%5D/gi, ']');
+}
 
 /**
- * Creates a new URL by combining the baseURL with the requestedURL,
- * only when the requestedURL is not already an absolute URL.
- * If the requestURL is absolute, this function returns the requestedURL untouched.
+ * Build a URL by appending params to the end
  *
- * @param {string} baseURL The base URL
- * @param {string} requestedURL Absolute or relative URL to combine
- * @returns {string} The combined full path
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
  */
-module.exports = function buildFullPath(baseURL, requestedURL) {
-  if (baseURL && !isAbsoluteURL(requestedURL)) {
-    return combineURLs(baseURL, requestedURL);
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
   }
-  return requestedURL;
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      } else {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
 };
 
-}, function(modId) { var map = {"../helpers/isAbsoluteURL":1725127877726,"../helpers/combineURLs":1725127877727}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877726, function(require, module, exports) {
-
-
-/**
- * Determines whether the specified URL is absolute
- *
- * @param {string} url The URL to test
- * @returns {boolean} True if the specified URL is absolute, otherwise false
- */
-module.exports = function isAbsoluteURL(url) {
-  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
-  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
-  // by any combination of letters, digits, plus, period, or hyphen.
-  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
-};
-
-}, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877727, function(require, module, exports) {
-
-
-/**
- * Creates a new URL by combining the specified URLs
- *
- * @param {string} baseURL The base URL
- * @param {string} relativeURL The relative URL
- * @returns {string} The combined URL
- */
-module.exports = function combineURLs(baseURL, relativeURL) {
-  return relativeURL
-    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
-    : baseURL;
-};
-
-}, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877728, function(require, module, exports) {
+}, function(modId) { var map = {"./../utils":1725212578348}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578358, function(require, module, exports) {
 
 
 var utils = require('./../utils');
@@ -1267,8 +941,8 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-}, function(modId) { var map = {"./../utils":1725127877711}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877729, function(require, module, exports) {
+}, function(modId) { var map = {"./../utils":1725212578348}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578359, function(require, module, exports) {
 
 
 var utils = require('./../utils');
@@ -1278,68 +952,68 @@ module.exports = (
 
   // Standard browser envs have full support of the APIs needed to test
   // whether the request URL is of the same origin as current location.
-    (function standardBrowserEnv() {
-      var msie = /(msie|trident)/i.test(navigator.userAgent);
-      var urlParsingNode = document.createElement('a');
-      var originURL;
+  (function standardBrowserEnv() {
+    var msie = /(msie|trident)/i.test(navigator.userAgent);
+    var urlParsingNode = document.createElement('a');
+    var originURL;
 
-      /**
+    /**
     * Parse a URL to discover it's components
     *
     * @param {String} url The URL to be parsed
     * @returns {Object}
     */
-      function resolveURL(url) {
-        var href = url;
+    function resolveURL(url) {
+      var href = url;
 
-        if (msie) {
+      if (msie) {
         // IE needs attribute set twice to normalize properties
-          urlParsingNode.setAttribute('href', href);
-          href = urlParsingNode.href;
-        }
-
         urlParsingNode.setAttribute('href', href);
-
-        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
-        return {
-          href: urlParsingNode.href,
-          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
-          host: urlParsingNode.host,
-          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
-          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
-          hostname: urlParsingNode.hostname,
-          port: urlParsingNode.port,
-          pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
-            urlParsingNode.pathname :
-            '/' + urlParsingNode.pathname
-        };
+        href = urlParsingNode.href;
       }
 
-      originURL = resolveURL(window.location.href);
+      urlParsingNode.setAttribute('href', href);
 
-      /**
+      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+      return {
+        href: urlParsingNode.href,
+        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+        host: urlParsingNode.host,
+        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+        hostname: urlParsingNode.hostname,
+        port: urlParsingNode.port,
+        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+                  urlParsingNode.pathname :
+                  '/' + urlParsingNode.pathname
+      };
+    }
+
+    originURL = resolveURL(window.location.href);
+
+    /**
     * Determine if a URL shares the same origin as the current location
     *
     * @param {String} requestURL The URL to test
     * @returns {boolean} True if URL shares the same origin, otherwise false
     */
-      return function isURLSameOrigin(requestURL) {
-        var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
-        return (parsed.protocol === originURL.protocol &&
+    return function isURLSameOrigin(requestURL) {
+      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+      return (parsed.protocol === originURL.protocol &&
             parsed.host === originURL.host);
-      };
-    })() :
+    };
+  })() :
 
   // Non standard browser envs (web workers, react-native) lack needed support.
-    (function nonStandardBrowserEnv() {
-      return function isURLSameOrigin() {
-        return true;
-      };
-    })()
+  (function nonStandardBrowserEnv() {
+    return function isURLSameOrigin() {
+      return true;
+    };
+  })()
 );
 
-}, function(modId) { var map = {"./../utils":1725127877711}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877730, function(require, module, exports) {
+}, function(modId) { var map = {"./../utils":1725212578348}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578360, function(require, module, exports) {
 
 
 var utils = require('./../utils');
@@ -1348,59 +1022,58 @@ module.exports = (
   utils.isStandardBrowserEnv() ?
 
   // Standard browser envs support document.cookie
-    (function standardBrowserEnv() {
-      return {
-        write: function write(name, value, expires, path, domain, secure) {
-          var cookie = [];
-          cookie.push(name + '=' + encodeURIComponent(value));
+  (function standardBrowserEnv() {
+    return {
+      write: function write(name, value, expires, path, domain, secure) {
+        var cookie = [];
+        cookie.push(name + '=' + encodeURIComponent(value));
 
-          if (utils.isNumber(expires)) {
-            cookie.push('expires=' + new Date(expires).toGMTString());
-          }
-
-          if (utils.isString(path)) {
-            cookie.push('path=' + path);
-          }
-
-          if (utils.isString(domain)) {
-            cookie.push('domain=' + domain);
-          }
-
-          if (secure === true) {
-            cookie.push('secure');
-          }
-
-          document.cookie = cookie.join('; ');
-        },
-
-        read: function read(name) {
-          var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
-          return (match ? decodeURIComponent(match[3]) : null);
-        },
-
-        remove: function remove(name) {
-          this.write(name, '', Date.now() - 86400000);
+        if (utils.isNumber(expires)) {
+          cookie.push('expires=' + new Date(expires).toGMTString());
         }
-      };
-    })() :
+
+        if (utils.isString(path)) {
+          cookie.push('path=' + path);
+        }
+
+        if (utils.isString(domain)) {
+          cookie.push('domain=' + domain);
+        }
+
+        if (secure === true) {
+          cookie.push('secure');
+        }
+
+        document.cookie = cookie.join('; ');
+      },
+
+      read: function read(name) {
+        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+        return (match ? decodeURIComponent(match[3]) : null);
+      },
+
+      remove: function remove(name) {
+        this.write(name, '', Date.now() - 86400000);
+      }
+    };
+  })() :
 
   // Non standard browser env (web workers, react-native) lack needed support.
-    (function nonStandardBrowserEnv() {
-      return {
-        write: function write() {},
-        read: function read() { return null; },
-        remove: function remove() {}
-      };
-    })()
+  (function nonStandardBrowserEnv() {
+    return {
+      write: function write() {},
+      read: function read() { return null; },
+      remove: function remove() {}
+    };
+  })()
 );
 
-}, function(modId) { var map = {"./../utils":1725127877711}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877731, function(require, module, exports) {
+}, function(modId) { var map = {"./../utils":1725212578348}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578361, function(require, module, exports) {
 
 
 var utils = require('./../utils');
 var settle = require('./../core/settle');
-var buildFullPath = require('../core/buildFullPath');
 var buildURL = require('./../helpers/buildURL');
 var http = require('http');
 var https = require('https');
@@ -1412,19 +1085,12 @@ var pkg = require('./../../package.json');
 var createError = require('../core/createError');
 var enhanceError = require('../core/enhanceError');
 
-var isHttps = /https:?/;
-
 /*eslint consistent-return:0*/
 module.exports = function httpAdapter(config) {
-  return new Promise(function dispatchHttpRequest(resolvePromise, rejectPromise) {
-    var resolve = function resolve(value) {
-      resolvePromise(value);
-    };
-    var reject = function reject(value) {
-      rejectPromise(value);
-    };
+  return new Promise(function dispatchHttpRequest(resolve, reject) {
     var data = config.data;
     var headers = config.headers;
+    var timer;
 
     // Set User-Agent (required by some servers)
     // Only set header if it hasn't been set in config
@@ -1437,9 +1103,9 @@ module.exports = function httpAdapter(config) {
       if (Buffer.isBuffer(data)) {
         // Nothing to do...
       } else if (utils.isArrayBuffer(data)) {
-        data = Buffer.from(new Uint8Array(data));
+        data = new Buffer(new Uint8Array(data));
       } else if (utils.isString(data)) {
-        data = Buffer.from(data, 'utf-8');
+        data = new Buffer(data, 'utf-8');
       } else {
         return reject(createError(
           'Data after transformation must be a string, an ArrayBuffer, a Buffer, or a Stream',
@@ -1460,8 +1126,7 @@ module.exports = function httpAdapter(config) {
     }
 
     // Parse url
-    var fullPath = buildFullPath(config.baseURL, config.url);
-    var parsed = url.parse(fullPath);
+    var parsed = url.parse(config.url);
     var protocol = parsed.protocol || 'http:';
 
     if (!auth && parsed.auth) {
@@ -1475,15 +1140,14 @@ module.exports = function httpAdapter(config) {
       delete headers.Authorization;
     }
 
-    var isHttpsRequest = isHttps.test(protocol);
-    var agent = isHttpsRequest ? config.httpsAgent : config.httpAgent;
+    var isHttps = protocol === 'https:';
+    var agent = isHttps ? config.httpsAgent : config.httpAgent;
 
     var options = {
       path: buildURL(parsed.path, config.params, config.paramsSerializer).replace(/^\?/, ''),
-      method: config.method.toUpperCase(),
+      method: config.method,
       headers: headers,
       agent: agent,
-      agents: { http: config.httpAgent, https: config.httpsAgent },
       auth: auth
     };
 
@@ -1500,44 +1164,17 @@ module.exports = function httpAdapter(config) {
       var proxyUrl = process.env[proxyEnv] || process.env[proxyEnv.toUpperCase()];
       if (proxyUrl) {
         var parsedProxyUrl = url.parse(proxyUrl);
-        var noProxyEnv = process.env.no_proxy || process.env.NO_PROXY;
-        var shouldProxy = true;
+        proxy = {
+          host: parsedProxyUrl.hostname,
+          port: parsedProxyUrl.port
+        };
 
-        if (noProxyEnv) {
-          var noProxy = noProxyEnv.split(',').map(function trim(s) {
-            return s.trim();
-          });
-
-          shouldProxy = !noProxy.some(function proxyMatch(proxyElement) {
-            if (!proxyElement) {
-              return false;
-            }
-            if (proxyElement === '*') {
-              return true;
-            }
-            if (proxyElement[0] === '.' &&
-                parsed.hostname.substr(parsed.hostname.length - proxyElement.length) === proxyElement) {
-              return true;
-            }
-
-            return parsed.hostname === proxyElement;
-          });
-        }
-
-
-        if (shouldProxy) {
-          proxy = {
-            host: parsedProxyUrl.hostname,
-            port: parsedProxyUrl.port
+        if (parsedProxyUrl.auth) {
+          var proxyUrlAuth = parsedProxyUrl.auth.split(':');
+          proxy.auth = {
+            username: proxyUrlAuth[0],
+            password: proxyUrlAuth[1]
           };
-
-          if (parsedProxyUrl.auth) {
-            var proxyUrlAuth = parsedProxyUrl.auth.split(':');
-            proxy.auth = {
-              username: proxyUrlAuth[0],
-              password: proxyUrlAuth[1]
-            };
-          }
         }
       }
     }
@@ -1551,22 +1188,21 @@ module.exports = function httpAdapter(config) {
 
       // Basic proxy authorization
       if (proxy.auth) {
-        var base64 = Buffer.from(proxy.auth.username + ':' + proxy.auth.password, 'utf8').toString('base64');
+        var base64 = new Buffer(proxy.auth.username + ':' + proxy.auth.password, 'utf8').toString('base64');
         options.headers['Proxy-Authorization'] = 'Basic ' + base64;
       }
     }
 
     var transport;
-    var isHttpsProxy = isHttpsRequest && (proxy ? isHttps.test(proxy.protocol) : true);
     if (config.transport) {
       transport = config.transport;
     } else if (config.maxRedirects === 0) {
-      transport = isHttpsProxy ? https : http;
+      transport = isHttps ? https : http;
     } else {
       if (config.maxRedirects) {
         options.maxRedirects = config.maxRedirects;
       }
-      transport = isHttpsProxy ? httpsFollow : httpFollow;
+      transport = isHttps ? httpsFollow : httpFollow;
     }
 
     if (config.maxContentLength && config.maxContentLength > -1) {
@@ -1577,6 +1213,10 @@ module.exports = function httpAdapter(config) {
     var req = transport.request(options, function handleResponse(res) {
       if (req.aborted) return;
 
+      // Response has been received so kill timer that handles request timeout
+      clearTimeout(timer);
+      timer = null;
+
       // uncompress the response body transparently if required
       var stream = res;
       switch (res.headers['content-encoding']) {
@@ -1585,7 +1225,7 @@ module.exports = function httpAdapter(config) {
       case 'compress':
       case 'deflate':
         // add the unzipper to the body stream processing pipeline
-        stream = (res.statusCode === 204) ? stream : stream.pipe(zlib.createUnzip());
+        stream = stream.pipe(zlib.createUnzip());
 
         // remove the content-encoding in order to not confuse downstream operations
         delete res.headers['content-encoding'];
@@ -1627,7 +1267,7 @@ module.exports = function httpAdapter(config) {
         stream.on('end', function handleStreamEnd() {
           var responseData = Buffer.concat(responseBuffer);
           if (config.responseType !== 'arraybuffer') {
-            responseData = responseData.toString(config.responseEncoding);
+            responseData = responseData.toString('utf8');
           }
 
           response.data = responseData;
@@ -1643,16 +1283,11 @@ module.exports = function httpAdapter(config) {
     });
 
     // Handle request timeout
-    if (config.timeout) {
-      // Sometime, the response will be very slow, and does not respond, the connect event will be block by event loop system.
-      // And timer callback will be fired, and abort() will be invoked before connection, then get "socket hang up" and code ECONNRESET.
-      // At this time, if we have a large number of request, nodejs will hang up some socket on background. and the number will up and up.
-      // And then these socket which be hang up will devoring CPU little by little.
-      // ClientRequest.setTimeout will be fired on the specify milliseconds, and can make sure that abort() will be fired after connect.
-      req.setTimeout(config.timeout, function handleRequestTimeout() {
+    if (config.timeout && !timer) {
+      timer = setTimeout(function handleRequestTimeout() {
         req.abort();
         reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED', req));
-      });
+      }, config.timeout);
     }
 
     if (config.cancelToken) {
@@ -1667,20 +1302,18 @@ module.exports = function httpAdapter(config) {
 
     // Send the request
     if (utils.isStream(data)) {
-      data.on('error', function handleStreamError(err) {
-        reject(enhanceError(err, config, null, req));
-      }).pipe(req);
+      data.pipe(req);
     } else {
       req.end(data);
     }
   });
 };
 
-}, function(modId) { var map = {"./../utils":1725127877711,"./../core/settle":1725127877722,"../core/buildFullPath":1725127877725,"./../helpers/buildURL":1725127877714,"http":1725127877731,"./../../package.json":1725127877732,"../core/createError":1725127877723,"../core/enhanceError":1725127877724}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877732, function(require, module, exports) {
+}, function(modId) { var map = {"./../utils":1725212578348,"./../core/settle":1725212578354,"./../helpers/buildURL":1725212578357,"http":1725212578361,"./../../package.json":1725212578362,"../core/createError":1725212578355,"../core/enhanceError":1725212578356}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578362, function(require, module, exports) {
 module.exports = {
   "name": "axios",
-  "version": "0.19.2",
+  "version": "0.18.1",
   "description": "Promise based HTTP client for the browser and node.js",
   "main": "index.js",
   "scripts": {
@@ -1691,8 +1324,7 @@ module.exports = {
     "version": "npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json",
     "postversion": "git push && git push --tags",
     "examples": "node ./examples/server.js",
-    "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "fix": "eslint --fix lib/**/*.js"
+    "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
     "type": "git",
@@ -1712,48 +1344,48 @@ module.exports = {
   },
   "homepage": "https://github.com/axios/axios",
   "devDependencies": {
-    "bundlesize": "^0.17.0",
-    "coveralls": "^3.0.0",
-    "es6-promise": "^4.2.4",
-    "grunt": "^1.0.2",
+    "bundlesize": "^0.5.7",
+    "coveralls": "^2.11.9",
+    "es6-promise": "^4.0.5",
+    "grunt": "^1.0.1",
     "grunt-banner": "^0.6.0",
     "grunt-cli": "^1.2.0",
-    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-nodeunit": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-eslint": "^20.1.0",
+    "grunt-eslint": "^19.0.0",
     "grunt-karma": "^2.0.0",
-    "grunt-mocha-test": "^0.13.3",
-    "grunt-ts": "^6.0.0-beta.19",
+    "grunt-ts": "^6.0.0-beta.3",
     "grunt-webpack": "^1.0.18",
     "istanbul-instrumenter-loader": "^1.0.0",
     "jasmine-core": "^2.4.1",
     "karma": "^1.3.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage": "^1.1.1",
-    "karma-firefox-launcher": "^1.1.0",
-    "karma-jasmine": "^1.1.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "^1.0.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.0.2",
     "karma-jasmine-ajax": "^0.1.13",
     "karma-opera-launcher": "^1.0.0",
     "karma-safari-launcher": "^1.0.0",
-    "karma-sauce-launcher": "^1.2.0",
+    "karma-sauce-launcher": "^1.1.0",
     "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
     "load-grunt-tasks": "^3.5.2",
     "minimist": "^1.2.0",
-    "mocha": "^5.2.0",
-    "sinon": "^4.5.0",
-    "typescript": "^2.8.1",
-    "url-search-params": "^0.10.0",
+    "sinon": "^1.17.4",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "url-search-params": "^0.6.1",
+    "typescript": "^2.0.3"
   },
   "browser": {
     "./lib/adapters/http.js": "./lib/adapters/xhr.js"
   },
   "typings": "./index.d.ts",
   "dependencies": {
-    "follow-redirects": "1.5.10"
+    "follow-redirects": "1.5.10",
+    "is-buffer": "^2.0.2"
   },
   "bundlesize": [
     {
@@ -1764,83 +1396,216 @@ module.exports = {
 }
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877733, function(require, module, exports) {
+__DEFINE__(1725212578363, function(require, module, exports) {
 
 
-var utils = require('../utils');
+var utils = require('./../utils');
+
+function InterceptorManager() {
+  this.handlers = [];
+}
 
 /**
- * Config-specific merge-function which creates a new config-object
- * by merging two configuration objects together.
+ * Add a new interceptor to the stack
  *
- * @param {Object} config1
- * @param {Object} config2
- * @returns {Object} New object resulting from merging config2 to config1
+ * @param {Function} fulfilled The function to handle `then` for a `Promise`
+ * @param {Function} rejected The function to handle `reject` for a `Promise`
+ *
+ * @return {Number} An ID used to remove interceptor later
  */
-module.exports = function mergeConfig(config1, config2) {
-  // eslint-disable-next-line no-param-reassign
-  config2 = config2 || {};
-  var config = {};
-
-  var valueFromConfig2Keys = ['url', 'method', 'params', 'data'];
-  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy'];
-  var defaultToConfig2Keys = [
-    'baseURL', 'url', 'transformRequest', 'transformResponse', 'paramsSerializer',
-    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
-    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress',
-    'maxContentLength', 'validateStatus', 'maxRedirects', 'httpAgent',
-    'httpsAgent', 'cancelToken', 'socketPath'
-  ];
-
-  utils.forEach(valueFromConfig2Keys, function valueFromConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    }
+InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected
   });
-
-  utils.forEach(mergeDeepPropertiesKeys, function mergeDeepProperties(prop) {
-    if (utils.isObject(config2[prop])) {
-      config[prop] = utils.deepMerge(config1[prop], config2[prop]);
-    } else if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (utils.isObject(config1[prop])) {
-      config[prop] = utils.deepMerge(config1[prop]);
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
-
-  utils.forEach(defaultToConfig2Keys, function defaultToConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
-
-  var axiosKeys = valueFromConfig2Keys
-    .concat(mergeDeepPropertiesKeys)
-    .concat(defaultToConfig2Keys);
-
-  var otherKeys = Object
-    .keys(config2)
-    .filter(function filterAxiosKeys(key) {
-      return axiosKeys.indexOf(key) === -1;
-    });
-
-  utils.forEach(otherKeys, function otherKeysDefaultToConfig2(prop) {
-    if (typeof config2[prop] !== 'undefined') {
-      config[prop] = config2[prop];
-    } else if (typeof config1[prop] !== 'undefined') {
-      config[prop] = config1[prop];
-    }
-  });
-
-  return config;
+  return this.handlers.length - 1;
 };
 
-}, function(modId) { var map = {"../utils":1725127877711}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877734, function(require, module, exports) {
+/**
+ * Remove an interceptor from the stack
+ *
+ * @param {Number} id The ID that was returned by `use`
+ */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+ * Iterate over all the registered interceptors
+ *
+ * This method is particularly useful for skipping over any
+ * interceptors that may have become `null` calling `eject`.
+ *
+ * @param {Function} fn The function to call for each interceptor
+ */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+module.exports = InterceptorManager;
+
+}, function(modId) { var map = {"./../utils":1725212578348}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578364, function(require, module, exports) {
+
+
+var utils = require('./../utils');
+var transformData = require('./transformData');
+var isCancel = require('../cancel/isCancel');
+var defaults = require('../defaults');
+var isAbsoluteURL = require('./../helpers/isAbsoluteURL');
+var combineURLs = require('./../helpers/combineURLs');
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ * @returns {Promise} The Promise to be fulfilled
+ */
+module.exports = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Support baseURL config
+  if (config.baseURL && !isAbsoluteURL(config.url)) {
+    config.url = combineURLs(config.baseURL, config.url);
+  }
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData(
+    config.data,
+    config.headers,
+    config.transformRequest
+  );
+
+  // Flatten headers
+  config.headers = utils.merge(
+    config.headers.common || {},
+    config.headers[config.method] || {},
+    config.headers || {}
+  );
+
+  utils.forEach(
+    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+    function cleanHeaderConfig(method) {
+      delete config.headers[method];
+    }
+  );
+
+  var adapter = config.adapter || defaults.adapter;
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = transformData(
+      response.data,
+      response.headers,
+      config.transformResponse
+    );
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData(
+          reason.response.data,
+          reason.response.headers,
+          config.transformResponse
+        );
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+};
+
+}, function(modId) { var map = {"./../utils":1725212578348,"./transformData":1725212578365,"../cancel/isCancel":1725212578366,"../defaults":1725212578351,"./../helpers/isAbsoluteURL":1725212578367,"./../helpers/combineURLs":1725212578368}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578365, function(require, module, exports) {
+
+
+var utils = require('./../utils');
+
+/**
+ * Transform the data for a request or a response
+ *
+ * @param {Object|String} data The data to be transformed
+ * @param {Array} headers The headers for the request or response
+ * @param {Array|Function} fns A single function or Array of functions
+ * @returns {*} The resulting transformed data
+ */
+module.exports = function transformData(data, headers, fns) {
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn(data, headers);
+  });
+
+  return data;
+};
+
+}, function(modId) { var map = {"./../utils":1725212578348}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578366, function(require, module, exports) {
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+}, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578367, function(require, module, exports) {
+
+
+/**
+ * Determines whether the specified URL is absolute
+ *
+ * @param {string} url The URL to test
+ * @returns {boolean} True if the specified URL is absolute, otherwise false
+ */
+module.exports = function isAbsoluteURL(url) {
+  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+  // by any combination of letters, digits, plus, period, or hyphen.
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+}, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578368, function(require, module, exports) {
+
+
+/**
+ * Creates a new URL by combining the specified URLs
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} relativeURL The relative URL
+ * @returns {string} The combined URL
+ */
+module.exports = function combineURLs(baseURL, relativeURL) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL;
+};
+
+}, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578369, function(require, module, exports) {
 
 
 /**
@@ -1862,7 +1627,7 @@ Cancel.prototype.__CANCEL__ = true;
 module.exports = Cancel;
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877735, function(require, module, exports) {
+__DEFINE__(1725212578370, function(require, module, exports) {
 
 
 var Cancel = require('./Cancel');
@@ -1921,8 +1686,8 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-}, function(modId) { var map = {"./Cancel":1725127877734}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1725127877736, function(require, module, exports) {
+}, function(modId) { var map = {"./Cancel":1725212578369}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1725212578371, function(require, module, exports) {
 
 
 /**
@@ -1952,7 +1717,7 @@ module.exports = function spread(callback) {
 };
 
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1725127877709);
+return __REQUIRE__(1725212578346);
 })()
-//miniprogram-npm-outsideDeps=["https","follow-redirects","url","zlib"]
+//miniprogram-npm-outsideDeps=["is-buffer","https","follow-redirects","url","zlib"]
 //# sourceMappingURL=index.js.map

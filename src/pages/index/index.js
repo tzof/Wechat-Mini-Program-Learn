@@ -279,6 +279,10 @@ Page({
       file: this.data.avatarUrl,
     }).then(res => {
       console.log(res, '我是上传oss');
+      this.setData({
+        avatarUrl: res.avatarUrl,
+        fileName: res.fileName
+      })
     })
     // wx.uploadFile({
     //   filePath: this.data.avatarUrl,
@@ -411,8 +415,11 @@ Page({
             code: res.code
           }).then(res => {
             console.log(res);
-            this.setToken(res.data.token);
-            wx.setStorageSync('token', res.data.token)
+            this.setData({
+              openId: res.openId
+            })
+            this.setToken(res.token);
+            wx.setStorageSync('token', res.token)
           })
           // wx.request({
           //   url: "https://tzof.net:217/login",

@@ -15,7 +15,7 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  const token = wx.getStorageSync('token');
+  const token = wx.getStorageSync('token') || '';
   config.headers.Authorization = token;
   return config;
 }, function (error) {
@@ -53,7 +53,7 @@ export function axiosWx(method, url, params) {
   // 返回一个promise对象 引用的地方可以使用.then或者await获取res数据
   return new Promise((resolve, reject) => {
     instance(axiosParams).then(res => {
-      resolve(res)
+      resolve(res.data)
     }).catch(err => {
       reject(err)
     })
@@ -74,7 +74,7 @@ export function uploadFile(url, params) {
         'authorization': wx.getStorageSync('token')
       },
       success: (res) => {
-        resolve(res)
+        resolve(JSON.parse(res.data))
       },
       fail: (err) => {
         reject(err)
