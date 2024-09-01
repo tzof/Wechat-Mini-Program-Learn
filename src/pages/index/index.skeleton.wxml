@@ -1,0 +1,108 @@
+<!--
+此文件为开发者工具生成，生成时间: 2024/9/2上午3:22:12
+使用方法：
+在 C:\Users\47025\Desktop\微信小程序\Wechat-Mini-Program-Learn\src\pages\index\index.wxml 引入模板
+
+```
+<import src="index.skeleton.wxml"/>
+<template is="skeleton" wx:if="{{loading}}" />
+```
+
+在 C:\Users\47025\Desktop\微信小程序\Wechat-Mini-Program-Learn\src\pages\index\index.wxss 中引入样式
+```
+@import "./index.skeleton.wxss";
+```
+
+更多详细信息可以参考文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/skeleton.html
+-->
+<template name="skeleton">
+  <view class="sk-container">
+    <view class="index sk-transparent">
+      <view is="pages/index/components/swiper/swiper">
+        <view class="swiper-box">
+          <swiper autoplay="false" circular="true" current="0" easing-function="easeInOutCubic" indicator-active-color="#00ff00" indicator-color="#ff0000" indicator-dots="true" interval="2000">
+            <swiper-item style="position: absolute; width: 100%; height: 100%; transform: translate(0%, 0px) translateZ(0px);">
+              <image mode="true" show-menu-by-longpress="true" class="sk-image"></image>
+            </swiper-item>
+          </swiper>
+        </view>
+      </view>
+      123
+      <view is="pages/index/components/info/info">
+        <view class="info-box">
+          <text class="sk-transparent"><text class="iconfont icon-tongchengpeisong sk-pseudo sk-pseudo-circle"></text>同城配送</text>
+          <text class="sk-transparent"><text class="iconfont icon-tese sk-pseudo sk-pseudo-circle"></text>行业龙头</text>
+          <text class="sk-transparent"><text class="iconfont icon-shijian sk-pseudo sk-pseudo-circle"></text>半小时送达</text>
+          <text class="sk-transparent"><text class="iconfont icon-haoping sk-pseudo sk-pseudo-circle"></text>100% 好评</text>
+        </view>
+      </view>
+      <view is="pages/index/components/goodNav/goodNav">
+        <view class="goodNav-box">
+          <view>
+            <image mode="true" class="sk-image"></image>
+            <navigator open-type="redirect" class="sk-transparent sk-text-14-2857-230 sk-text">鲜花商城</navigator>
+          </view>
+          <view>
+            <image mode="true" class="sk-image"></image>
+            <navigator open-type="redirect" class="sk-transparent sk-text-14-2857-209 sk-text">鲜花商城</navigator>
+          </view>
+          <view>
+            <image mode="true" class="sk-image"></image>
+            <navigator open-type="redirect" class="sk-transparent sk-text-14-2857-509 sk-text">鲜花商城</navigator>
+          </view>
+          <view>
+            <image mode="true" class="sk-image"></image>
+            <navigator open-type="redirect" class="sk-transparent sk-text-14-2857-722 sk-text">鲜花商城</navigator>
+          </view>
+          <view>
+            <image mode="true" class="sk-image"></image>
+            <navigator open-type="redirect" class="sk-transparent sk-text-14-2857-819 sk-text">鲜花商城</navigator>
+          </view>
+        </view>
+      </view>
+      <view is="pages/index/components/scroll/scroll">
+        <view class="scroll-box">
+          <scroll-view enable-flex="true" scroll-x="true" enhanced="true" paging-enabled="true" scroll-left="100" scroll-with-animation="true" show-scrollbar="true">
+            <view class="shop-box" style="scroll-snap-align: start; scroll-snap-stop: always;">
+              <image mode="true" class="sk-image"></image>
+              <view>
+                <text class="name sk-transparent sk-text-14-2857-339 sk-text">玫瑰花1</text>
+                <text class="sk-transparent sk-text-14-2857-641 sk-text">88</text>
+              </view>
+            </view>
+            <view class="shop-box" style="scroll-snap-align: start; scroll-snap-stop: always;">
+              <image mode="true" class="sk-image"></image>
+              <view>
+                <text class="name sk-transparent sk-text-14-2857-526 sk-text">玫瑰花2</text>
+                <text class="sk-transparent sk-text-14-2857-196 sk-text">23</text>
+              </view>
+            </view>
+            <view class="shop-box" style="scroll-snap-align: start; scroll-snap-stop: always;">
+              <image mode="true" class="sk-image"></image>
+              <view>
+                <text class="name sk-transparent sk-text-14-2857-107 sk-text">玫瑰花3</text>
+                <text class="sk-transparent sk-text-14-2857-191 sk-text">234</text>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+      <view class="sk-image">
+        <text class="sk-transparent sk-text-14-2857-20 sk-text">测试1 </text>
+        <text class="sk-transparent sk-text-14-2857-474 sk-text">100 </text>
+        <text class="sk-transparent sk-text-14-2857-295 sk-text">岁
+</text>
+        <text class="sk-transparent sk-text-14-2857-326 sk-text">1我是1 </text>
+        <text class="sk-transparent sk-text-14-2857-600 sk-text">2我是2 </text>
+        <text class="sk-transparent sk-text-14-2857-781 sk-text">3other2</text>
+        <text class="sk-transparent sk-text-14-2857-332 sk-text">4other3</text>
+        <text class="sk-transparent sk-text-14-2857-285 sk-text">5other4</text>
+        <text class="sk-transparent sk-text-14-2857-729 sk-text">6other5</text>
+        <text class="sk-transparent sk-text-14-2857-391 sk-text">7other6</text>
+        <text class="sk-transparent sk-text-14-2857-627 sk-text">8other7</text>
+        <text class="sk-transparent sk-text-14-2857-623 sk-text">9other8</text>
+        <text class="sk-transparent sk-text-14-2857-757 sk-text">0other9</text>
+      </view>
+    </view>
+  </view>
+</template>

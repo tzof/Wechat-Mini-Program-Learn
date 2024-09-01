@@ -1,5 +1,7 @@
+<import src="index.skeleton.wxml"/>
+<template is="skeleton" wx:if="{{loading}}" />
 <!--pages/index/index.wxml-->
-<view class="index">
+<view wx:else="" class="index">
   <swiperBox />
   {{token}}
   <info />

@@ -46,6 +46,7 @@ Page({
     userName: "用户昵称",
     openId: null,
     storeBindings: {},
+    loading: true, // 是否显示骨架屏
   },
   onTapTest(event) {
     console.log(this.data.check);
@@ -461,6 +462,11 @@ Page({
    */
   onReady() {
     console.log("onReady", "页面初次渲染完成的时候执行");
+    setTimeout(() => {
+      this.setData({
+        loading: false,
+      })
+    }, 10000);
   },
 
   /**
