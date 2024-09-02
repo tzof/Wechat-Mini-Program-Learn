@@ -413,7 +413,7 @@ Page({
         console.log(res);
         if (res.code) {
           login({
-            // code: res.code
+            code: res.code
           }).then(res => {
             console.log(res);
             this.setData({
@@ -462,11 +462,9 @@ Page({
    */
   onReady() {
     console.log("onReady", "页面初次渲染完成的时候执行");
-    setTimeout(() => {
-      this.setData({
-        loading: false,
-      })
-    }, 10000);
+    this.setData({
+      loading: false,
+    })
   },
 
   /**

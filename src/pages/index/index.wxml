@@ -114,4 +114,5 @@
   <customWatch />
   <!-- 上传文件 -->
   <button bindtap="onClickUpload">上传文件</button>
+  <navigator url="/packageA/list/list">转跳分包页面</navigator>
 </view>

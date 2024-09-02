@@ -1,4 +1,4 @@
-// pages/list/list.js
+// packageB/userB/userB.js
 Page({
 
     /**

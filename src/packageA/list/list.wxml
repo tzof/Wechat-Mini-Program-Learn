@@ -1,3 +1,4 @@
 <!--pages/list/list.wxml-->
 <text>pages/list/list.wxml</text>
+<view>我是分包页面</view>
 <button bindtap="navigateBack">navigateBack</button>  

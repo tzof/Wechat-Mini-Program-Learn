@@ -9,8 +9,6 @@
     "pages/index/components/info/info",
     "pages/index/components/swiper/swiper",
     "pages/index/components/goodNav/goodNav",
-    "pages/list/list",
-    "pages/test/test",
     "pages/index/components/scroll/scroll"
   ],
   "window": {
@@ -66,14 +64,21 @@
     "van-image": "@vant/weapp/image/index",
     "van-button": "@vant/weapp/button/index"
   },
-  "subPackages": [
+  "subPackages": [{
+      "root": "packageA",
+      "name": "list",
+      "pages": [
+        "list/list",
+        "test/test"
+      ]
+    },
     {
-     "root": "packageA",
-     "name": "list",
-     "pages": [
-       "list/list",
-       "test/test"
-     ]
+      "root": "packageB",
+      "name": "userB",
+      "pages": [
+        "userB/userB"
+      ],
+      "independent": true
     }
   ]
 }
