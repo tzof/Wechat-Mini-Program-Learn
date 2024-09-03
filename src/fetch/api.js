@@ -1,9 +1,6 @@
 import axios from 'axios'
 // 特定于微信小程序的适配器
 import mpAdapter from 'axios-miniprogram-adapter'
-import {
-  upload
-} from './upload';
 // 使用适配器
 axios.defaults.adapter = mpAdapter
 // 创建一个axios实例
@@ -15,7 +12,9 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  const token = wx.getStorageSync('token') || '';
+  // Bearer令牌是一种常用的认证机制，特别是在 OAuth 2.0 授权框架中。尽管 JWT 本身是一种独立的令牌格式，但在实际应用中，通常会在 HTTP 请求头中使用 Bearer 方式来携带 JWT。
+  // Bearer JWT Bearer表示后面的令牌是一种“持有者令牌”（bearer token）。这意味着任何持有该令牌的人都被视为合法的请求者。
+  const token = 'Bearer ' + wx.getStorageSync('token') || '';
   config.headers.Authorization = token;
   return config;
 }, function (error) {
@@ -71,7 +70,7 @@ export function uploadFile(url, params) {
       url: instance.defaults.baseURL + url,
       formData: params,
       header: {
-        'authorization': wx.getStorageSync('token')
+        'authorization': 'Bearer ' + wx.getStorageSync('token')
       },
       success: (res) => {
         resolve(JSON.parse(res.data))

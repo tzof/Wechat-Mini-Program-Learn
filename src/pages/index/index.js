@@ -47,6 +47,7 @@ Page({
     openId: null,
     storeBindings: {},
     loading: true, // 是否显示骨架屏
+    className: 'a-block'
   },
   onTapTest(event) {
     console.log(this.data.check);
